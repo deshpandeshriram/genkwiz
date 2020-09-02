@@ -1,4 +1,4 @@
-# genkwiz
+# Fetch API
 This is a Maven project to fetch questions and submit answers ,with facility to check the documentation and heath parameters of the API.
 
 
