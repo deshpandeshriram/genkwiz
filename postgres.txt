@@ -1,7 +1,0 @@
-password 123456
-
-
-
-copy quesans
-from 'C:\Users\Hp\Downloads\postgresql\pgsql\bin\trial2.csv'
-DELIMITER '#' csv header;
