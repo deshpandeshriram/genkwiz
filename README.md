@@ -19,12 +19,12 @@ Once the application runs you should see something like this:
 About the Service
 
 The service is just a simple fetch and submit API. It uses an external database to store the data. Here we have used PostgreSQL. If your database connection properties work, you can call some REST endpoints defined in com.genkwiz.starter.Question.QuestionController on port 8080. 
-More interestingly, you can start calling some of the operational endpoints (see full list below) like /metrics and /health 
+More interestingly, you can start calling some of the operational endpoints (see full list below) like /metrics and /health.
 
 Here is what this little application demonstrates:
 
 Full integration with the latest Spring Framework: inversion of control, dependency injection, etc.
-Packaging as a single war with embedded container (tomcat 8): No need to install a container separately on the host just run using the java -jar command
+Packaging as a single war with embedded container (tomcat 8): No need to install a container separately on the host just run using the java -jar command.
 Demonstrates how to set up healthcheck, metrics, info, environment, etc. endpoints automatically on a configured port. Inject your own health / metrics info with a few lines of code.
 
 Writing a RESTful service using annotation: 
@@ -32,8 +32,8 @@ Writing a RESTful service using annotation:
 Supports both XML and JSON request / response; simply use desired Accept header in your request.
 Exception mapping from application exceptions to the right HTTP response with exception details in the body.
 Spring Data Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations.
-Automatic CRUD functionality against the data source using Spring Repository pattern
-API is "self-documented" by Swagger2 using annotations
+Automatic CRUD functionality against the data source using Spring Repository pattern.
+API is "self-documented" by Swagger2 using annotations.
 
 Here are some endpoints you can call:
 Get information about system health, configurations, etc.
@@ -48,7 +48,7 @@ http://localhost:8080/metrics
  
 To view Swagger 2 API docs
 
-   Run the server and browse to localhost:8080/swagger-ui.html
+   Run the server and browse to localhost:8080/swagger-ui.html.
    
    
 Running the project with PostGres
