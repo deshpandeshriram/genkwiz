@@ -68,11 +68,19 @@ In pom.xml add:
 Append this to the end of application.properties:
  
 spring.jpa.database=POSTGRESQL
+
 spring.datasource.platform=postgres
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+
 spring.datasource.username=<<your username>>
+
 spring.datasource.password=<<your password>>
+
 spring.jpa.show-sql=true
+
 spring.jpa.generate-ddl=true
+
 spring.jpa.hibernate.ddl-auto=update
+
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
