@@ -2,7 +2,7 @@
     This is a Maven project to fetch questions and submit answers ,with facility to check the documentation and heath parameters of the API.
 
 
-###HOW TO RUN:
+/###HOW TO RUN:
 
     This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary.You run it using the java -jar command.
 
