@@ -67,20 +67,20 @@
  
 ### Append this to the end of application.yml:
  
-   spring:
-  datasource:
-    password: <<your password>>
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: <<your username>>
-  jpa:
-    database: POSTGRESQL
-    generate-ddl: true
-    hibernate:
+    spring:
+     datasource:
+      password: <<your password>>
+      platform: postgres
+      url: jdbc:postgresql://localhost:5432/postgres
+      username: <<your username>>
+    jpa:
+     database: POSTGRESQL
+     generate-ddl: true
+     hibernate:
       ddl-auto: update
-    properties:
+     properties:
       hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
-    show-sql: true
+       jdbc:
+        lob:
+         non_contextual_creation: true
+     show-sql: true
