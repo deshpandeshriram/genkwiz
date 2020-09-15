@@ -65,22 +65,22 @@
      </dependency>
  
  
-### Append this to the end of application.properties:
+### Append this to the end of application.yml:
  
-    spring.jpa.database=POSTGRESQL
-
-    spring.datasource.platform=postgres
-
-    spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
-
-    spring.datasource.username=<<your username>>
-
-    spring.datasource.password=<<your password>>
-
-    spring.jpa.show-sql=true
-
-    spring.jpa.generate-ddl=true
-
-    spring.jpa.hibernate.ddl-auto=update
-
-    spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+   spring:
+  datasource:
+    password: <<your password>>
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: <<your username>>
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
