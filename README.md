@@ -6,16 +6,16 @@
 
     This application is packaged as a jar which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary.You run it using the java -jar command.
 
-    *Make sure you are using JDK 1.8 and Maven 3.x.
-    *You can build the project and run the tests by running mvn clean package.
-    *Once successfully built, you can run the service by :
+    * Make sure you are using JDK 1.8 and Maven 3.x.
+    * You can build the project and run the tests by running mvn clean package.
+    * Once successfully built, you can run the service by :
 
-    java -jar path\to\jar\file\fetchq-api-0.0.1-SNAPSHOT.jar
+      java -jar path\to\jar\file\fetchq-api-0.0.1-SNAPSHOT.jar
  
-    *Once the application runs you should see something like this:
+    * Once the application runs you should see something like this:
 
-    2020-08-30 17:46:50.237  INFO 13652 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
-    2020-08-30 17:46:50.247  INFO 13652 --- [           main] com.genkwiz.starter.FetchApp             : Started FetchApp in 10.062 seconds (JVM running for 10.826)
+      2020-08-30 17:46:50.237  INFO 13652 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
+      2020-08-30 17:46:50.247  INFO 13652 --- [           main] com.genkwiz.starter.FetchApp             : Started FetchApp in 10.062 seconds (JVM running for 10.826)
  
 ### About the Service
 
@@ -24,14 +24,14 @@
 
 #### Here is what this little application demonstrates:
 
-    *Full integration with the latest Spring Framework: inversion of control, dependency injection, etc.
-    *Packaging as a single war with embedded container (tomcat 8): No need to install a container separately on the host just run using the java -jar command.
-    *Demonstrates how to set up healthcheck, metrics, info, environment, etc. endpoints automatically on a configured port. Inject your own health / metrics info with a few    lines of code.
-    *Writing a RESTful service using annotation: Supports both XML and JSON request / response; simply use desired Accept header in your request.
-    *Exception mapping from application exceptions to the right HTTP response with exception details in the body.
-    *Spring Data Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations.
-    *Automatic CRUD functionality against the data source using Spring Repository pattern.
-    *API is "self-documented" by Swagger2 using annotations.
+    * Full integration with the latest Spring Framework: inversion of control, dependency injection, etc.
+    * Packaging as a single war with embedded container (tomcat 8): No need to install a container separately on the host just run using the java -jar command.
+    * Demonstrates how to set up healthcheck, metrics, info, environment, etc. endpoints automatically on a configured port. Inject your own health / metrics info with a few    lines of code.
+    * Writing a RESTful service using annotation: Supports both XML and JSON request / response; simply use desired Accept header in your request.
+    * Exception mapping from application exceptions to the right HTTP response with exception details in the body.
+    * Spring Data Integration with JPA/Hibernate with just a few lines of configuration and familiar annotations.
+    * Automatic CRUD functionality against the data source using Spring Repository pattern.
+    * API is "self-documented" by Swagger2 using annotations.
 
 #### Here are some endpoints you can call:
 
