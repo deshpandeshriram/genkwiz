@@ -1,198 +1,295 @@
-swagger: '2.0'
-info:
-  description: 'Interactive quizzing API with questions of multiple engrossing genres. API allows to get questions and submit answers '
-  version: '1.0'
-  title: GenKwiz API
-  termsOfService: Simple to use
-  contact:
-    name: Shriram Deshpande
-    url: 'http://genkwiz.com'
-    email: deshpandeshriram@gmail.com
-  license:
-    name: API License
-    url: 'http://genkwiz.com'
-host: 'localhost:8080'
-basePath: /genkwiz/v1
-tags:
-  - name: GenKwiz
-    description: REST API for GenKwiz
-paths:
-  /answer:
-    post:
-      tags:
-        - GenKwiz
-      summary: Submit Answers
-      description: Submit Answer
-      operationId: addQuestionUsingPOST
-      consumes:
-        - application/json
-      produces:
-        - '*/*'
-      parameters:
-        - in: body
-          name: a
-          description: a
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Question'
-        '204':
-          description: No content.
-          schema:
-            $ref: '#/definitions/Question'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: Internal Server Error
-      deprecated: false
-  /questions:
-    get:
-      tags:
-        - GenKwiz
-      summary: Get Questions
-      operationId: getQuestionsUsingGET
-      produces:
-        - '*/*'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Question'
-        '204':
-          description: No content.
-          schema:
-            $ref: '#/definitions/Question'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: Internal Server Error
-      deprecated: false
-  '/questions/{genre}':
-    get:
-      tags:
-        - GenKwiz
-      summary: Get all Questions of particular genre
-      description: Type in the genre and get all questions of the genre entered
-      operationId: getQuestionUsingGET
-      produces:
-        - '*/*'
-      parameters:
-        - name: genre
-          in: path
-          description: genre
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Question'
-        '204':
-          description: No content.
-          schema:
-            $ref: '#/definitions/Question'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: Internal Server Error
-      deprecated: false
-    put:
-      tags:
-        - GenKwiz
-      summary: Update the questions of particular type
-      operationId: updateQuestionUsingPUT
-      consumes:
-        - application/json
-      produces:
-        - '*/*'
-      parameters:
-        - name: genre
-          in: path
-          description: genre
-          required: true
-          type: string
-        - in: body
-          name: q
-          description: q
-          required: true
-          schema:
-            $ref: '#/definitions/Question'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Question'
-        '204':
-          description: No content.
-          schema:
-            $ref: '#/definitions/Question'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: Internal Server Error
-      deprecated: false
-    delete:
-      tags:
-        - GenKwiz
-      summary: Delete Questions of particular type
-      operationId: deleteQuestionUsingDELETE
-      produces:
-        - '*/*'
-      parameters:
-        - name: genre
-          in: path
-          description: genre
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Question'
-        '204':
-          description: No content.
-          schema:
-            $ref: '#/definitions/Question'
-        '401':
-          description: Unauthorized
-        '403':
-          description: Forbidden
-        '500':
-          description: Internal Server Error
-      deprecated: false
-definitions:
-  Question:
-    type: object
-    properties:
-      genre:
-        type: string
-      hint1:
-        type: string
-      hint2:
-        type: string
-      hint3:
-        type: string
-      mode:
-        type: string
-      q_id:
-        type: integer
-        format: int32
-      quest:
-        type: string
-      story:
-        type: string
-      sub_ques:
-        type: string
-    title: Question
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Interactive quizzing API with questions of multiple engrossing genres. API allows to get questions and submit answers ",
+        "version": "1.0",
+        "title": "GenKwiz API",
+        "termsOfService": "Simple to use",
+        "contact": {
+            "name": "Shriram Deshpande",
+            "url": "http://genkwiz.com",
+            "email": "deshpandeshriram@gmail.com"
+        },
+        "license": {
+            "name": "API License",
+            "url": "http://genkwiz.com"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/genkwiz/v1",
+    "tags": [
+        {
+            "name": "GenKwiz",
+            "description": "REST API for GenKwiz"
+        }
+    ],
+    "paths": {
+        "/answer": {
+            "post": {
+                "tags": [
+                    "GenKwiz"
+                ],
+                "summary": "Submit Answers",
+                "description": "Submit Answer",
+                "operationId": "addQuestionUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "a",
+                        "description": "a",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/questions": {
+            "get": {
+                "tags": [
+                    "GenKwiz"
+                ],
+                "summary": "Get Questions",
+                "operationId": "getQuestionsUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/questions/{genre}": {
+            "put": {
+                "tags": [
+                    "GenKwiz"
+                ],
+                "summary": "Update the questions of particular type",
+                "operationId": "updateQuestionUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "genre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "q",
+                        "description": "q",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "deprecated": false
+            },
+            "delete": {
+                "tags": [
+                    "GenKwiz"
+                ],
+                "summary": "Delete Questions of particular type",
+                "operationId": "deleteQuestionUsingDELETE",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "genre",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    },
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "deprecated": false
+            }
+        },
+        "/questions/{genre}/{mode}": {
+            "get": {
+                "tags": [
+                    "GenKwiz"
+                ],
+                "summary": "Get all Questions of particular genre",
+                "description": "Type in the genre and get all questions of the genre entered",
+                "operationId": "getQuestionUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "genre",
+                        "in": "path",
+                        "description": "genre",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "mode",
+                        "in": "path",
+                        "description": "mode",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Question"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "definitions": {
+        "Question": {
+            "type": "object",
+            "properties": {
+                "genre": {
+                    "type": "string"
+                },
+                "hint1": {
+                    "type": "string"
+                },
+                "hint2": {
+                    "type": "string"
+                },
+                "hint3": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                },
+                "q_id": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "quest": {
+                    "type": "string"
+                },
+                "story": {
+                    "type": "string"
+                },
+                "sub_ques": {
+                    "type": "string"
+                }
+            },
+            "title": "Question"
+        }
+    }
+}
