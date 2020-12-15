@@ -9,7 +9,7 @@ info:
   license:
     name: API License
     url: 'http://genkwiz.com'
-  version: 1.0-oas3
+  version: 0.0.2-oas3
 servers:
   - url: 'http://localhost:8080/genkwiz/v1'
 tags:
@@ -55,17 +55,21 @@ paths:
                 type: object
                 properties:
                   id:
+                    description: quiz id .
                     type: integer
                     format: int32
                   aid:
+                    description: question id.
                     type: integer
                     format: int32
           links:
             GetQuizByQuizId:
+              description: The 'id' value returned in the response can be used as the 'quizId' parameter in 'GET /quizzes/{quizId}'.
               operationId: getQuiz
               parameters:
                 quizId: '$response.body#/id'
             GetAnswerByQuesId:
+              description: The 'aid' value returned in the response can be used as the 'Id' parameter in 'GET /answers/{Id}' to fetch anwser.
               operationId: displayAnswer
               parameters:
                 Id: '$response.body#/aid'
@@ -92,7 +96,7 @@ paths:
       parameters:
         - name: quizId
           in: path
-          description: quiz Id
+          description: quizId
           required: true
           schema:
             type: integer
@@ -155,15 +159,15 @@ components:
       title: Hint
       type: object
       properties:
-        hintId:
+        Id:
           type: integer
           format: int32
-        hintMediaType:
+        MediaType:
           $ref: '#/components/schemas/MultimediaH'
-        hintNumber:
+        Number:
           type: integer
           format: int32
-        hintValue:
+        Value:
           type: string
         marksDeduction:
           type: integer
@@ -189,11 +193,11 @@ components:
       title: Multimedia as question.
       type: object
       properties:
-        mName:
+        Name:
           type: string
-        multiType:
+        Type:
           type: string
-        multiId:
+        Id:
           type: integer
           format: int32
     MultimediaQ:
@@ -205,8 +209,7 @@ components:
         multiType:
           type: string
         Id:
-          type: integer
-          format: int32
+          $ref: '#/components/schemas/Question'
         Number:
           type: integer
           format: int32
@@ -222,6 +225,7 @@ components:
         Genre:
           type: string
         Id:
+          description: question id required to fetch answer in 'Answer'.
           type: integer
           format: int32
         Question:
@@ -236,8 +240,7 @@ components:
       type: object
       properties:
         Id:
-          type: integer
-          format: int32
+          $ref: '#/components/schemas/Question'
         Answer:
           type: string
     Quiz:
