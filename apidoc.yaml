@@ -64,12 +64,16 @@ paths:
                     format: int32
           links:
             GetQuizByQuizId:
-              description: The 'id' value returned in the response can be used as the 'quizId' parameter in 'GET /quizzes/{quizId}'.
+              description: >-
+                The 'id' value returned in the response can be used as the
+                'quizId' parameter in 'GET /quizzes/{quizId}'.
               operationId: getQuiz
               parameters:
                 quizId: '$response.body#/id'
             GetAnswerByQuesId:
-              description: The 'aid' value returned in the response can be used as the 'Id' parameter in 'GET /answers/{Id}' to fetch anwser.
+              description: >-
+                The 'aid' value returned in the response can be used as the 'Id'
+                parameter in 'GET /answers/{Id}' to fetch anwser.
               operationId: displayAnswer
               parameters:
                 Id: '$response.body#/aid'
