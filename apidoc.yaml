@@ -59,7 +59,7 @@ paths:
                     type: integer
                     format: int32
                   aid:
-                    description: question id.
+                    description: question id of answer to be submitted.
                     type: integer
                     format: int32
           links:
@@ -78,7 +78,7 @@ paths:
               parameters:
                 Id: '$response.body#/aid'
         '400':
-          description: Invalid Order
+          description: Bad Request 
         '401':
           description: Unauthorized
           content: {}
@@ -194,7 +194,7 @@ components:
         modeName:
           type: string
     MultimediaH:
-      title: Multimedia as question.
+      title: Multimedia in hint.
       type: object
       properties:
         Name:
@@ -204,8 +204,8 @@ components:
         Id:
           type: integer
           format: int32
-    MultimediaQ:
-      title: Multimedia as question.
+    Multimedia:
+      title: Multimedia in question.
       type: object
       properties:
         Name:
