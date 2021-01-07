@@ -58,8 +58,8 @@ paths:
                     description: quiz id .
                     type: integer
                     format: int32
-                  aid:
-                    description: question id of answer to be submitted.
+                  tempId:
+                    description: answer id of answer to be submitted.
                     type: integer
                     format: int32
           links:
@@ -72,11 +72,11 @@ paths:
                 quizId: '$response.body#/id'
             GetAnswerByQuesId:
               description: >-
-                The 'aid' value returned in the response can be used as the 'Id'
-                parameter in 'GET /answers/{Id}' to fetch anwser.
+                The 'tempId' value returned in the response can be used as the 'answerId'
+                parameter in 'GET /answers/{answerId}' to fetch anwser.
               operationId: displayAnswer
               parameters:
-                Id: '$response.body#/aid'
+                answerId: '$response.body#/tempId'
         '400':
           description: Bad Request 
         '401':
@@ -124,16 +124,16 @@ paths:
           description: Not Found
           content: {}
       deprecated: false
-  '/answers/{Id}':
+  '/answers/{answerId}':
     get:
       tags:
         - quiz-controller
       description: Display correct answer.
       operationId: displayAnswer
       parameters:
-        - name: Id
+        - name: answerId
           in: path
-          description: question ID
+          description: Id of correct answer to be displayed on submit answer.
           required: true
           schema:
             type: integer
@@ -258,7 +258,7 @@ components:
         mode:
           $ref: '#/components/schemas/Mode'
         multimediaq:
-          $ref: '#/components/schemas/MultimediaQ'
+          $ref: '#/components/schemas/Multimedia'
         numberofHints:
           $ref: '#/components/schemas/Hint'
         Id:
