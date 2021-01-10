@@ -5,7 +5,7 @@ create database genkwiz;
 create table question_mode(
 id bigserial not null,
 mode_name varchar not null,
-max_time time not null,
+max_time int not null,
 max_score int not null,
 primary key (id)
 );
@@ -98,6 +98,6 @@ no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
-total_time_taken timestamp not null,
+total_time_taken int not null,
 primary key (id)
 );
