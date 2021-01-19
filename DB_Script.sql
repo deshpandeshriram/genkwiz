@@ -81,8 +81,8 @@ create table quiz(
 id int not null,
 question_id int not null,
 time_taken_by_user int not null,
-hints_used int  default 0,
-score_per_question int  default 0,
+hints_used int default 0,
+score_per_question int default 0,
 is_attempted varchar (6) not null
 );
 
