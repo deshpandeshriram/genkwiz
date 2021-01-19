@@ -50,7 +50,7 @@ primary key (id),
 foreign key (question_id) references question_bank(id)
 );
 
-create index index_multimedia on multimedia (question_id , number);
+create index index_multimedia on multimedia (question_id , multimedia_number);
 
 /*Purpose:Consists of a set of correct answers for subjective questions.*/
 create table subjective_answer(
