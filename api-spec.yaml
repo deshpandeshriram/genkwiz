@@ -1,0 +1,285 @@
+openapi: 3.0.1
+info:
+  title: GenKwiz API
+  description: Interactive quizzing API with questions of multiple engrossing genres.
+  contact:
+    name: Shriram Deshpande
+    url: 'http://genkwiz.com'
+    email: deshpandeshriram@gmail.com
+  license:
+    name: API License
+    url: 'http://genkwiz.com'
+  version: 0.0.2
+servers:
+  - url: 'http://localhost:8080/genkwiz/v1'
+tags:
+  - name: quiz-controller
+    description: Quiz Controller
+paths:
+  /quizzes:
+    post:
+      tags:
+        - quiz-controller
+      description: creates quiz returns quizID.
+      operationId: createQuiz
+      parameters:
+        - name: genre
+          in: query
+          description: genre of the question.
+          required: true
+          schema:
+            type: string
+        - name: mode
+          in: query
+          description: mode of the quiz.
+          required: true
+          schema:
+            type: string
+        - name: number
+          in: query
+          description: number of questions to fetch.
+          required: false
+          schema:
+            type: integer
+            minimum: 3
+            maximum: 10
+            default: 10
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    description: quiz id .
+                    type: integer
+                    format: int32
+                  tempId:
+                    description: answer id of answer to be submitted.
+                    type: integer
+                    format: int32
+          links:
+            GetQuizByQuizId:
+              description: >-
+                The 'id' value returned in the response can be used as the
+                'quizId' parameter in 'GET /quizzes/{quizId}'.
+              operationId: getQuiz
+              parameters:
+                quizId: '$response.body#/id'
+            GetAnswerByQuesId:
+              description: >-
+                The 'tempId' value returned in the response can be used as the 'answerId'
+                parameter in 'GET /answers/{answerId}' to fetch anwser.
+              operationId: displayAnswer
+              parameters:
+                answerId: '$response.body#/tempId'
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+  '/quizzes/{quizId}':
+    get:
+      tags:
+        - quiz-controller
+      description: fetch all the components of quiz.
+      operationId: getQuiz
+      parameters:
+        - name: quizId
+          in: path
+          description: quizId
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: false
+  '/answers/{answerId}':
+    get:
+      tags:
+        - quiz-controller
+      description: Display correct answer.
+      operationId: displayAnswer
+      parameters:
+        - name: type
+          in: query
+          description: type of the question.
+          required: true
+          schema:
+            type: string
+        - name: answerId
+          in: path
+          description: Id of correct answer to be displayed on submit answer.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/Answer'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: false
+components:
+  schemas:
+    Hint:
+      title: Hint
+      type: object
+      properties:
+        Id:
+          type: integer
+          format: int32
+        MediaType:
+          $ref: '#/components/schemas/MultimediaH'
+        Number:
+          type: integer
+          format: int32
+        Value:
+          type: string
+        marksDeduction:
+          type: integer
+          format: int32
+        qId:
+          type: integer
+          format: int32
+    Mode:
+      title: Mode
+      type: object
+      properties:
+        maxSore:
+          type: integer
+          format: int32
+        maxTime:
+          $ref: '#/components/schemas/Time'
+        modeId:
+          type: integer
+          format: int32
+        modeName:
+          type: string
+    MultimediaH:
+      title: Multimedia in hint.
+      type: object
+      properties:
+        Name:
+          type: string
+        Type:
+          type: string
+        Id:
+          type: integer
+          format: int32
+    Multimedia:
+      title: Multimedia in question.
+      type: object
+      properties:
+        Name:
+          type: string
+        multiType:
+          type: string
+        Id:
+          $ref: '#/components/schemas/Question'
+        Number:
+          type: integer
+          format: int32
+        multiId:
+          type: integer
+          format: int32
+    Question:
+      title: Question
+      type: object
+      properties:
+        modeId:
+          $ref: '#/components/schemas/Mode'
+        Genre:
+          type: string
+        Id:
+          description: question id required to fetch answer in 'Answer'.
+          type: integer
+          format: int32
+        Question:
+          type: string
+        Ratings:
+          type: number
+          format: float
+        Type:
+          type: string
+    Answer:
+      title: Answer of the question.
+      type: object
+      properties:
+        Id:
+          $ref: '#/components/schemas/Question'
+        Answer:
+          type: string
+    Quiz:
+      title: Quiz
+      type: object
+      properties:
+        attempted:
+          type: boolean
+        hint:
+          $ref: '#/components/schemas/Hint'
+        mode:
+          $ref: '#/components/schemas/Mode'
+        multimediaq:
+          $ref: '#/components/schemas/Multimedia'
+        numberofHints:
+          $ref: '#/components/schemas/Hint'
+        Id:
+          type: integer
+          format: int32
+        question:
+          $ref: '#/components/schemas/Question'
+        quizId:
+          type: integer
+          format: int32
+        scorePerQuestion:
+          type: integer
+          format: int32
+        userTime:
+          $ref: '#/components/schemas/Time'
+    Time:
+      title: Time
+      type: string
+      format: date-time
+      description: Creation date and time
