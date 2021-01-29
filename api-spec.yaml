@@ -56,10 +56,7 @@ paths:
                     description: quiz id .
                     type: integer
                     format: int32
-                  tempId:
-                    description: answer id of answer to be submitted.
-                    type: integer
-                    format: int32
+                  
           links:
             GetQuizByQuizId:
               description: >-
@@ -68,13 +65,7 @@ paths:
               operationId: getQuiz
               parameters:
                 quizId: '$response.body#/id'
-            GetAnswerByQuesId:
-              description: >-
-                The 'tempId' value returned in the response can be used as the 'answerId'
-                parameter in 'GET /answers/{answerId}' to fetch anwser.
-              operationId: displayAnswer
-              parameters:
-                answerId: '$response.body#/tempId'
+            
         '400':
           description: Bad Request 
         '401':
@@ -122,35 +113,62 @@ paths:
           description: Not Found
           content: {}
       deprecated: false
-  '/answers/{answerId}':
-    get:
+   
+  '/answers/{quizId}':
+    post:
       tags:
         - quiz-controller
-      description: Display correct answer.
-      operationId: displayAnswer
+      description: submit and display correct answer .
+      operationId: submitAnswer
       parameters:
-        - name: type
-          in: query
-          description: type of the question.
+        - name: quizId
+          in: path
+          description: Id of the quiz.
           required: true
           schema:
             type: string
-        - name: answerId
-          in: path
-          description: Id of correct answer to be displayed on submit answer.
+        - name: questionId
+          in: query
+          description: Id of question whose answer is to be submitted.
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
+        - name: type
+          in: query
+          description: Type of the Question (MCQ/Subjective)
+          required: true
+          schema:
+            type: string    
+        - name: params
+          in: query
+          description: Details of attempted question 
+          required: true
+          schema:
+            type: object
+            properties:
+              userTime:
+                type: integer
+              hintsUsed:
+                type: integer
+              scorePerQuestion:
+                type: integer
+              isAttempted:
+                type: boolean
+              userAnswer:
+                type: string
       responses:
-        '200':
-          description: OK
+        '201':
+          description: successful operation
           content:
             application/json:
               schema:
-                type: string
+                type: object
                 items:
-                  $ref: '#/components/schemas/Answer'
+                 $ref : '#/components/schemas/Answer'  
+         
+            
+        '400':
+          description: Bad Request 
         '401':
           description: Unauthorized
           content: {}
@@ -160,14 +178,153 @@ paths:
         '404':
           description: Not Found
           content: {}
-      deprecated: false
+        '500':
+          description: Internal Server Error
+          content: {} 
+          
+  '/performance/{quizId}':
+    get:
+      tags:
+        - quiz-controller
+      description: Get the perfomance individual questions.
+      operationId: getPerformance.
+      parameters:
+        - name: quizId
+          in: path
+          description: Id of the quiz played.
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                 userTime:
+                  type: integer
+                  format: int32
+                 hintsUsed:
+                  type: integer
+                  format: int32
+                 scorePerQuestion: 
+                  type: integer
+                  format: int32
+                 isAttempted:
+                  type: boolean
+            
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}  
+          
+  '/score':
+    post:
+      tags:
+        - quiz-controller
+      description: Post performance of Entire Quiz.
+      operationId: SubmitFinalPerformance.
+      parameters:
+        - name: quizId
+          in: query
+          description: Id of the quiz played.
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  performanceId:
+                    description: performance id .
+                    type: integer
+                    format: int32
+            
+                  
+          links:
+            GetPerformanceByPerformanceId:
+              description: >-
+                The 'performanceId' value returned in the response can be used as the
+                'performanceId' parameter in 'GET /score/{performanceId}'.
+              operationId: getScore
+              parameters:
+                performanceId: '$response.body#/performanceId'          
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {} 
+  '/score/{performanceId}':
+    get:
+      tags:
+        - quiz-controller
+      description: Post performance of Entire Quiz.
+      operationId: getScore.
+      parameters:
+        - name: performanceId
+          in: path
+          description: Performance id of quiz Played
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref : '#/components/schemas/Performance'
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}       
 components:
   schemas:
     Hint:
       title: Hint
       type: object
       properties:
-        Id:
+        hintId:
           type: integer
           format: int32
         MediaType:
@@ -180,9 +337,8 @@ components:
         marksDeduction:
           type: integer
           format: int32
-        qId:
-          type: integer
-          format: int32
+        questionId:
+          $ref: '#/components/schemas/Question'
     Mode:
       title: Mode
       type: object
@@ -203,11 +359,18 @@ components:
       properties:
         Name:
           type: string
-        Type:
+        multiType:
           type: string
-        Id:
+        hintId:
+          $ref: '#/components/schemas/Hint'
+        multiId:
           type: integer
-          format: int32
+          format: int32  
+        multicontent:
+          type: string
+          format: byte
+          
+          
     Multimedia:
       title: Multimedia in question.
       type: object
@@ -216,14 +379,17 @@ components:
           type: string
         multiType:
           type: string
-        Id:
+        questionId:
           $ref: '#/components/schemas/Question'
-        Number:
+        numberOfMultimedia:
           type: integer
           format: int32
         multiId:
           type: integer
           format: int32
+        multicontent:
+          type: string
+          format: byte
     Question:
       title: Question
       type: object
@@ -232,7 +398,7 @@ components:
           $ref: '#/components/schemas/Mode'
         Genre:
           type: string
-        Id:
+        questionId:
           description: question id required to fetch answer in 'Answer'.
           type: integer
           format: int32
@@ -247,9 +413,9 @@ components:
       title: Answer of the question.
       type: object
       properties:
-        Id:
+        questionId:
           $ref: '#/components/schemas/Question'
-        Answer:
+        answerValue:
           type: string
     Quiz:
       title: Quiz
@@ -259,15 +425,14 @@ components:
           type: boolean
         hint:
           $ref: '#/components/schemas/Hint'
+        multimediah:
+           $ref: '#/components/schemas/MultimediaH'
         mode:
           $ref: '#/components/schemas/Mode'
         multimediaq:
           $ref: '#/components/schemas/Multimedia'
         numberofHints:
           $ref: '#/components/schemas/Hint'
-        Id:
-          type: integer
-          format: int32
         question:
           $ref: '#/components/schemas/Question'
         quizId:
@@ -277,9 +442,35 @@ components:
           type: integer
           format: int32
         userTime:
-          $ref: '#/components/schemas/Time'
+          type: integer
+          format: int32
+        isAttempted:
+          type: boolean
     Time:
       title: Time
       type: string
       format: date-time
       description: Creation date and time
+      
+    Performance:
+      title: Performance
+      type: object
+      properties:
+        numberOfCorrect:
+          type: integer
+          format: int32 
+        performanceId:
+          type: integer
+          format: int32
+        quizId:
+          type: integer
+          format: int32  
+        numberOfAttempted:
+          type: integer
+          format: int32
+        totalTime:
+          type: integer
+          format: int32
+        finalScore:
+          type: integer
+          format: int32
