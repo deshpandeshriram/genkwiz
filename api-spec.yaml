@@ -236,7 +236,7 @@ paths:
       tags:
         - quiz-controller
       description: Post performance of Entire Quiz.
-      operationId: SubmitFinalPerformance.
+      operationId: SubmitFinalPerformance
       parameters:
         - name: quizId
           in: query
