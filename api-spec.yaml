@@ -187,7 +187,7 @@ paths:
       tags:
         - quiz-controller
       description: Get the perfomance individual questions.
-      operationId: getPerformance.
+      operationId: getPerformance
       parameters:
         - name: quizId
           in: path
@@ -286,7 +286,7 @@ paths:
       tags:
         - quiz-controller
       description: Post performance of Entire Quiz.
-      operationId: getScore.
+      operationId: getScore
       parameters:
         - name: performanceId
           in: path
