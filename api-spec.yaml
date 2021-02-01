@@ -20,24 +20,24 @@ paths:
     post:
       tags:
         - quiz-controller
-      description: creates quiz returns quizID.
+      description: Creates the quiz with mode and genre opted by the user and returns the Quiz Id.
       operationId: createQuiz
       parameters:
         - name: genre
           in: query
-          description: genre of the question.
+          description: Genre of the quiz.(eg.Politics,Sports etc.)
           required: true
           schema:
             type: string
         - name: mode
           in: query
-          description: mode of the quiz.
+          description: Mode of the questions in the quiz.(Eg.Easy,Medium,Hard)
           required: true
           schema:
             type: string
         - name: number
           in: query
-          description: number of questions to fetch.
+          description: Total number of questions in the quiz.
           required: false
           schema:
             type: integer
@@ -52,19 +52,19 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    description: quiz id .
-                    type: integer
-                    format: int32
+                  quizId:
+                    description: Id of the quiz generated.
+                    type: string
+                    format: uuid
                   
           links:
             GetQuizByQuizId:
               description: >-
-                The 'id' value returned in the response can be used as the
+                The 'quizId' value returned in the response can be used as the
                 'quizId' parameter in 'GET /quizzes/{quizId}'.
               operationId: getQuiz
               parameters:
-                quizId: '$response.body#/id'
+                quizId: '$response.body#/quizId'
             
         '400':
           description: Bad Request 
@@ -84,16 +84,16 @@ paths:
     get:
       tags:
         - quiz-controller
-      description: fetch all the components of quiz.
+      description: Fetch questions,hints and other components of the quiz which is created by User's choice.
       operationId: getQuiz
       parameters:
         - name: quizId
           in: path
-          description: quizId
+          description: Id returned on quiz formation which is now used to fetch quiz.
           required: true
           schema:
-            type: integer
-            format: int32
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK
@@ -103,6 +103,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Quiz'
+                  
+                  
+              
         '401':
           description: Unauthorized
           content: {}
@@ -118,39 +121,40 @@ paths:
     post:
       tags:
         - quiz-controller
-      description: submit and display correct answer .
+      description: Submit the user's answer and display the correct answer.
       operationId: submitAnswer
       parameters:
         - name: quizId
           in: path
-          description: Id of the quiz.
+          description: Id of the quiz currently being played.
           required: true
           schema:
             type: string
+            format: uuid
         - name: questionId
           in: query
           description: Id of question whose answer is to be submitted.
           required: true
           schema:
-            type: string
+            type: integer
         - name: type
           in: query
           description: Type of the Question (MCQ/Subjective)
           required: true
           schema:
             type: string    
-        - name: params
-          in: query
+          
+      requestBody:
           description: Details of attempted question 
           required: true
-          schema:
-            type: object
-            properties:
+          content:
+           application/json:
+            schema:
+             type: object
+             properties:
               userTime:
                 type: integer
               hintsUsed:
-                type: integer
-              scorePerQuestion:
                 type: integer
               isAttempted:
                 type: boolean
@@ -182,12 +186,13 @@ paths:
           description: Internal Server Error
           content: {} 
           
-  '/performance/{quizId}':
+          
+  '/quizzes/{quizId}/submit':
     get:
       tags:
         - quiz-controller
-      description: Get the perfomance individual questions.
-      operationId: getPerformance
+      description: Get performance of Entire Quiz.
+      operationId: SubmitFinalPerformance
       parameters:
         - name: quizId
           in: path
@@ -195,6 +200,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
         
       responses:
         '201':
@@ -203,70 +209,10 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                 userTime:
-                  type: integer
-                  format: int32
-                 hintsUsed:
-                  type: integer
-                  format: int32
-                 scorePerQuestion: 
-                  type: integer
-                  format: int32
-                 isAttempted:
-                  type: boolean
-            
-        '400':
-          description: Bad Request 
-        '401':
-          description: Unauthorized
-          content: {}
-        '403':
-          description: Forbidden
-          content: {}
-        '404':
-          description: Not Found
-          content: {}
-        '500':
-          description: Internal Server Error
-          content: {}  
-          
-  '/score':
-    post:
-      tags:
-        - quiz-controller
-      description: Post performance of Entire Quiz.
-      operationId: SubmitFinalPerformance
-      parameters:
-        - name: quizId
-          in: query
-          description: Id of the quiz played.
-          required: true
-          schema:
-            type: string
-        
-      responses:
-        '201':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  performanceId:
-                    description: performance id .
-                    type: integer
-                    format: int32
-            
-                  
-          links:
-            GetPerformanceByPerformanceId:
-              description: >-
-                The 'performanceId' value returned in the response can be used as the
-                'performanceId' parameter in 'GET /score/{performanceId}'.
-              operationId: getScore
-              parameters:
-                performanceId: '$response.body#/performanceId'          
+                items:
+                 $ref: '#/components/schemas/Performance'
+                    
+ 
         '400':
           description: Bad Request 
         '401':
@@ -281,43 +227,7 @@ paths:
         '500':
           description: Internal Server Error
           content: {} 
-  '/score/{performanceId}':
-    get:
-      tags:
-        - quiz-controller
-      description: Post performance of Entire Quiz.
-      operationId: getScore
-      parameters:
-        - name: performanceId
-          in: path
-          description: Performance id of quiz Played
-          required: true
-          schema:
-            type: string
-        
-      responses:
-        '201':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                items:
-                  $ref : '#/components/schemas/Performance'
-        '400':
-          description: Bad Request 
-        '401':
-          description: Unauthorized
-          content: {}
-        '403':
-          description: Forbidden
-          content: {}
-        '404':
-          description: Not Found
-          content: {}
-        '500':
-          description: Internal Server Error
-          content: {}       
+  
 components:
   schemas:
     Hint:
@@ -414,7 +324,8 @@ components:
       type: object
       properties:
         questionId:
-          $ref: '#/components/schemas/Question'
+          type: integer
+          format: int32
         answerValue:
           type: string
     Quiz:
@@ -448,10 +359,13 @@ components:
           type: boolean
     Time:
       title: Time
-      type: string
-      format: date-time
       description: Creation date and time
-      
+      type: object
+      properties:
+        time: 
+          type: string
+          format: date-time
+        
     Performance:
       title: Performance
       type: object
@@ -469,8 +383,5 @@ components:
           type: integer
           format: int32
         totalTime:
-          type: integer
-          format: int32
-        finalScore:
           type: integer
           format: int32
