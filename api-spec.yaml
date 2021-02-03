@@ -100,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
                 items:
                   $ref: '#/components/schemas/Quiz'
                   
@@ -330,41 +330,36 @@ components:
           type: string
     Quiz:
       title: Quiz
-      type: object
-      properties:
-        attempted:
-          type: boolean
-        hint:
-          $ref: '#/components/schemas/Hint'
-        multimediah:
-           $ref: '#/components/schemas/MultimediaH'
-        mode:
-          $ref: '#/components/schemas/Mode'
-        multimediaq:
-          $ref: '#/components/schemas/Multimedia'
-        numberofHints:
-          $ref: '#/components/schemas/Hint'
-        question:
-          $ref: '#/components/schemas/Question'
-        quizId:
+      # [ {"question": "What is the Capital of Maharashtra? ","hint":"starts with m",...}, {"question": "What is capital Karnataka? ","hint":"starts with b",...} ]
+      type: array
+      items:
+       type: object
+       properties:
+         quizId:
+          type: string
+          format: uuid
+         question:
+          type: string
+         hint:
+          type: string
+         multimediaq:
+          type: string
+          format: byte
+         multimediah:
+          type: string
+          format: byte
+         maxScore:
           type: integer
           format: int32
-        scorePerQuestion:
-          type: integer
-          format: int32
-        userTime:
-          type: integer
-          format: int32
-        isAttempted:
-          type: boolean
+           
     Time:
       title: Time
       description: Creation date and time
       type: object
       properties:
         time: 
-          type: string
-          format: date-time
+         type: string
+         format: date-time
         
     Performance:
       title: Performance
@@ -383,5 +378,8 @@ components:
           type: integer
           format: int32
         totalTime:
+          type: integer
+          format: int32
+        finalScore:
           type: integer
           format: int32
