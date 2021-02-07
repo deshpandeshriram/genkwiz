@@ -34,7 +34,12 @@ paths:
           description: Mode of the questions in the quiz.(Eg.Easy,Medium,Hard)
           required: true
           schema:
-            type: string
+           type: string
+           enum :
+            - Easy
+            - Medium
+            - Hard
+          
         - name: number
           in: query
           description: Total number of questions in the quiz.
@@ -100,8 +105,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
                   $ref: '#/components/schemas/Quiz'
                   
                   
@@ -143,7 +146,9 @@ paths:
           required: true
           schema:
             type: string    
-          
+            enum :
+            - MCQ
+            - Subjective
       requestBody:
           description: Details of attempted question 
           required: true
@@ -166,8 +171,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
                  $ref : '#/components/schemas/Answer'  
          
             
@@ -208,8 +211,6 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                items:
                  $ref: '#/components/schemas/Performance'
                     
  
@@ -232,14 +233,14 @@ components:
   schemas:
     Hint:
       title: Hint
+      allOf:     
+        - $ref: '#/components/schemas/Multimedia'
       type: object
       properties:
         hintId:
           type: integer
           format: int32
-        MediaType:
-          $ref: '#/components/schemas/MultimediaH'
-        Number:
+        hintNumber:
           type: integer
           format: int32
         Value:
@@ -247,8 +248,6 @@ components:
         marksDeduction:
           type: integer
           format: int32
-        questionId:
-          $ref: '#/components/schemas/Question'
     Mode:
       title: Mode
       type: object
@@ -263,34 +262,14 @@ components:
           format: int32
         modeName:
           type: string
-    MultimediaH:
-      title: Multimedia in hint.
-      type: object
-      properties:
-        Name:
-          type: string
-        multiType:
-          type: string
-        hintId:
-          $ref: '#/components/schemas/Hint'
-        multiId:
-          type: integer
-          format: int32  
-        multicontent:
-          type: string
-          format: byte
-          
-          
     Multimedia:
-      title: Multimedia in question.
+      title: Multimedia
       type: object
       properties:
-        Name:
+        multiName:
           type: string
         multiType:
           type: string
-        questionId:
-          $ref: '#/components/schemas/Question'
         numberOfMultimedia:
           type: integer
           format: int32
@@ -300,8 +279,11 @@ components:
         multicontent:
           type: string
           format: byte
+          
     Question:
       title: Question
+      allOf:     # Combines the BasicErrorModel and the inline model
+        - $ref: '#/components/schemas/Multimedia'
       type: object
       properties:
         modeId:
@@ -319,8 +301,11 @@ components:
           format: float
         Type:
           type: string
+        hintId:
+          $ref: '#/components/schemas/Hint'
+          
     Answer:
-      title: Answer of the question.
+      title: Answer
       type: object
       properties:
         questionId:
@@ -331,6 +316,7 @@ components:
     Quiz:
       title: Quiz
       # [ {"question": "What is the Capital of Maharashtra? ","hint":"starts with m",...}, {"question": "What is capital Karnataka? ","hint":"starts with b",...} ]
+      
       type: array
       items:
        type: object
