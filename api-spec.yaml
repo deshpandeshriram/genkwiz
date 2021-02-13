@@ -233,8 +233,6 @@ components:
   schemas:
     Hint:
       title: Hint
-      allOf:     
-        - $ref: '#/components/schemas/Multimedia'
       type: object
       properties:
         hintId:
@@ -243,11 +241,14 @@ components:
         hintNumber:
           type: integer
           format: int32
-        Value:
+        hintValue:
           type: string
         marksDeduction:
           type: integer
           format: int32
+        hintMultimedia: 
+          $ref: '#/components/schemas/Multimedia'
+          
     Mode:
       title: Mode
       type: object
@@ -262,6 +263,7 @@ components:
           format: int32
         modeName:
           type: string
+          
     Multimedia:
       title: Multimedia
       type: object
@@ -282,27 +284,27 @@ components:
           
     Question:
       title: Question
-      allOf:     # Combines the BasicErrorModel and the inline model
-        - $ref: '#/components/schemas/Multimedia'
       type: object
       properties:
         modeId:
           $ref: '#/components/schemas/Mode'
-        Genre:
+        genre:
           type: string
         questionId:
           description: question id required to fetch answer in 'Answer'.
           type: integer
           format: int32
-        Question:
+        questionValue:
           type: string
-        Ratings:
+        rating:
           type: number
           format: float
-        Type:
+        type:
           type: string
-        hintId:
+        hintValue:
           $ref: '#/components/schemas/Hint'
+        questionMultimedia:
+          $ref: '#/components/schemas/Multimedia'
           
     Answer:
       title: Answer
@@ -316,28 +318,16 @@ components:
     Quiz:
       title: Quiz
       # [ {"question": "What is the Capital of Maharashtra? ","hint":"starts with m",...}, {"question": "What is capital Karnataka? ","hint":"starts with b",...} ]
+      type: object
+      properties:
+       quizId:
+         type: string
+         format: uuid
+       questionValue:
+        type: array
+        items:
+         $ref: '#/components/schemas/Question'
       
-      type: array
-      items:
-       type: object
-       properties:
-         quizId:
-          type: string
-          format: uuid
-         question:
-          type: string
-         hint:
-          type: string
-         multimediaq:
-          type: string
-          format: byte
-         multimediah:
-          type: string
-          format: byte
-         maxScore:
-          type: integer
-          format: int32
-           
     Time:
       title: Time
       description: Creation date and time
