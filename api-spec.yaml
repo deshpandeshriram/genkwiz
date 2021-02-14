@@ -120,7 +120,7 @@ paths:
           content: {}
       deprecated: false
    
-  '/answers/{quizId}':
+  '/quizzes/{quizId}/answers/{questionId}':
     post:
       tags:
         - quiz-controller
@@ -135,20 +135,12 @@ paths:
             type: string
             format: uuid
         - name: questionId
-          in: query
+          in: path
           description: Id of question whose answer is to be submitted.
           required: true
           schema:
             type: integer
-        - name: type
-          in: query
-          description: Type of the Question (MCQ/Subjective)
-          required: true
-          schema:
-            type: string    
-            enum :
-            - MCQ
-            - Subjective
+        
       requestBody:
           description: Details of attempted question 
           required: true
@@ -159,12 +151,16 @@ paths:
              properties:
               userTime:
                 type: integer
+                format : int32
               hintsUsed:
                 type: integer
               isAttempted:
                 type: boolean
               userAnswer:
                 type: string
+              typeOfQuestion:
+                type: string    
+               
       responses:
         '201':
           description: successful operation
@@ -191,7 +187,7 @@ paths:
           
           
   '/quizzes/{quizId}/submit':
-    get:
+    post:
       tags:
         - quiz-controller
       description: Get performance of Entire Quiz.
@@ -235,19 +231,21 @@ components:
       title: Hint
       type: object
       properties:
-        hintId:
+        id:
           type: integer
           format: int32
-        hintNumber:
+        number:
           type: integer
           format: int32
-        hintValue:
+        text:
           type: string
         marksDeduction:
           type: integer
           format: int32
-        hintMultimedia: 
-          $ref: '#/components/schemas/Multimedia'
+        multimedia: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Multimedia'
           
     Mode:
       title: Mode
@@ -258,10 +256,10 @@ components:
           format: int32
         maxTime:
           $ref: '#/components/schemas/Time'
-        modeId:
+        id:
           type: integer
           format: int32
-        modeName:
+        name:
           type: string
           
     Multimedia:
@@ -286,24 +284,28 @@ components:
       title: Question
       type: object
       properties:
-        modeId:
+        mode:
           $ref: '#/components/schemas/Mode'
         genre:
           type: string
-        questionId:
+        id:
           description: question id required to fetch answer in 'Answer'.
           type: integer
           format: int32
-        questionValue:
+        text:
           type: string
         rating:
           type: number
           format: float
         type:
           type: string
-        hintValue:
-          $ref: '#/components/schemas/Hint'
-        questionMultimedia:
+        hints:
+         type: array
+         items:
+           $ref: '#/components/schemas/Hint'
+        multimedia:
+         type: array
+         items:
           $ref: '#/components/schemas/Multimedia'
           
     Answer:
@@ -313,7 +315,7 @@ components:
         questionId:
           type: integer
           format: int32
-        answerValue:
+        text:
           type: string
     Quiz:
       title: Quiz
@@ -323,7 +325,7 @@ components:
        quizId:
          type: string
          format: uuid
-       questionValue:
+       questions:
         type: array
         items:
          $ref: '#/components/schemas/Question'
@@ -344,9 +346,6 @@ components:
         numberOfCorrect:
           type: integer
           format: int32 
-        performanceId:
-          type: integer
-          format: int32
         quizId:
           type: integer
           format: int32  
