@@ -1,0 +1,34 @@
+# to upload csv file (query)
+
+COPY question_bank(id,question,genre,mode_id,ratings,type)
+FROM 'F:\sample.csv'
+DELIMITER ','
+CSV HEADER;
+
+#creation of uuid for quiz table
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+create table quiz(
+id uuid DEFAULT uuid_generate_v4(),   
+question_id int not null,
+time_taken_by_user int not null,
+hints_used int default 0,
+score_per_question int default 0,
+is_attempted varchar (6) not null
+
+#to generate same uuid for 10 question in one quiz
+
+with data (id) as (
+   select uuid_generate_v4()
+)
+SELECT *
+FROM quiz 
+  cross join data;
+
+ //for insertion
+with quiz (id) as (
+   select uuid_generate_v4()
+)insert into quiz(question_id) select id from question_bank where genre='gk' and mode_id=3;
+  select * from quiz;
+  delete from quiz;
