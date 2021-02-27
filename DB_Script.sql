@@ -31,7 +31,7 @@ question_id int not null,
 hint_number int not null,
 value text not null,
 marks_deduction int, 
-multimedia_content bytea,
+multimedia_content varchar,
 multmedia_itype varchar,
 primary key (id),
 foreign key (question_id) references question_Bank(id)
@@ -45,7 +45,7 @@ id serial not null,
 question_id int not null,
 multimedia_number int not null,
 multimedia_type varchar not null,
-multimedia_content bytea not null,
+multimedia_content varchar not null,
 primary key (id),
 foreign key (question_id) references question_bank(id)
 );
