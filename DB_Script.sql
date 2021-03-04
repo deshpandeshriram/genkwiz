@@ -32,7 +32,7 @@ hint_number int not null,
 value text not null,
 marks_deduction int, 
 multimedia_content varchar,
-multmedia_itype varchar,
+multimedia_type varchar,
 primary key (id),
 foreign key (question_id) references question_Bank(id)
 );
