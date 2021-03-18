@@ -31,8 +31,8 @@ question_id int not null,
 hint_number int not null,
 value text not null,
 marks_deduction int, 
-multimedia_content bytea,
-multmedia_itype varchar,
+multimedia_content varchar,
+multimedia_type varchar,
 primary key (id),
 foreign key (question_id) references question_Bank(id)
 );
@@ -76,28 +76,43 @@ foreign key (question_id) references question_bank(id)
 
 create index index_mcq_answer on mcq_answer (question_id , answer_number);
 
+#creation of uuid for quiz table
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 /*Purpose: Consists information about quizzes to be generated.*/
 create table quiz(
-id int not null,
+id uuid not null,
 question_id int not null,
-time_taken_by_user int not null,
+time_taken_by_user int default 0,
 hints_used int default 0,
 score_per_question int default 0,
-is_attempted varchar (6) not null
+is_attempted varchar (6) default false
 );
 
 create index index_quiz on quiz (question_id , score_per_question);
 
 /*Purpose: Consists information about performance parameters to evaluate users.*/
 create table performance(
-id serial not null,
-user_id varchar not null,
-quiz_id int not null,
+session_id uuid not null,
+user_name varchar not null,
+avatar_id int default 0,  
+quiz_id uuid not null,
 no_of_attempted int not null,
 no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
 total_time_taken int not null,
-primary key (id)
+primary key (session_id)
 );
+
+create table avatar(
+id bigserial not null,
+avatar_name varchar not null,
+content bytea not null,
+avatar_type varchar not null, 
+primary key(id)
+
+)
+
