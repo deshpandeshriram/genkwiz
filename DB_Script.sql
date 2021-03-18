@@ -103,8 +103,8 @@ no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
-total_time_taken int not null,
-primary key (session_id)
+total_time_taken int not null
+
 );
 
 create table avatar(
