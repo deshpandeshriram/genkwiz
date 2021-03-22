@@ -115,7 +115,7 @@ avatar_type varchar not null,
 primary key(id)
 );
 
-/*Purpose: Consists information .*/
+/*Purpose: Consists information about user's quiz history on genkwiz.com .*/
 create table session_management(
 id uuid not null,
 user_name varchar not null,
