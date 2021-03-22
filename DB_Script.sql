@@ -94,15 +94,15 @@ create index index_quiz on quiz (question_id , score_per_question);
 
 /*Purpose: Consists information about performance parameters to evaluate users.*/
 create table performance(
-id bigserial not null,
+id integer not null,
 quiz_id uuid not null,
 no_of_attempted int not null,
 no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
-total_time_taken int not null,
-primary key(id)
+total_time_taken int not null
+
 );
 
 
