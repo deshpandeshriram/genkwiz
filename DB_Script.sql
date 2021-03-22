@@ -94,25 +94,32 @@ create index index_quiz on quiz (question_id , score_per_question);
 
 /*Purpose: Consists information about performance parameters to evaluate users.*/
 create table performance(
-session_id uuid not null,
-user_name varchar not null,
-avatar_id int default 0,  
+id bigserial not null,
 quiz_id uuid not null,
 no_of_attempted int not null,
 no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
-total_time_taken int not null
-
+total_time_taken int not null,
+primary key(id)
 );
 
+
+/*Purpose: Consists information about available avatars for user.*/
 create table avatar(
 id bigserial not null,
 avatar_name varchar not null,
 content bytea not null,
 avatar_type varchar not null, 
 primary key(id)
+);
 
-)
+/*Purpose: Consists information .*/
+create table session_management(
+id uuid not null,
+user_name varchar not null,
+avatar_id int default 1,
+quiz_id uuid	
+);
 
