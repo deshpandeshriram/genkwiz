@@ -20,15 +20,10 @@ public interface QuizRepository extends CrudRepository<Quiz,Integer>{
 	 
 	 @Transactional
 	 @Modifying
-	 @Query(value="insert into quiz(question_id)select id from question_bank where genre=:genre and mode_id=:modeId limit :noOfQuestions ", nativeQuery=true )
-	 //@Query("with data (id) as (  select uuid_generate_v4())update quiz  set id=d.id from data d;")
-     int createQuiz(@Param("genre")String genre,@Param("modeId") int mode,@Param("noOfQuestions") int noOfQuestions);
+	 @Query(value="insert into quiz(question_id)select id from question_bank where genre=:genre and mode_id=:modeId limit :noOfQuestions ;"+"update quiz set id=:uuid where id is null", nativeQuery=true )
+	 int createQuiz(@Param("genre")String genre,@Param("modeId") int mode,@Param("noOfQuestions") int noOfQuestions,@Param("uuid")UUID uuid);
 
-	 @Transactional
-	 @Modifying
-     @Query(value="with data (id) as (  select uuid_generate_v4())update quiz  set id=d.id from data d", nativeQuery=true)
-	 void createQuiz();
-
+	
 	 
 		
 
