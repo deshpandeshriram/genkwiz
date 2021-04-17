@@ -106,9 +106,9 @@ total_time_taken int not null
 );
 
 
-/*Purpose: Consists information about available avatars for user.*/
+/*Purpose: Consists information about available avatars for user.No longer needed for version 1*/
 create table avatar(
-id bigserial not null,
+id serial not null,
 avatar_name varchar not null,
 content bytea not null,
 avatar_type varchar not null, 
@@ -119,7 +119,7 @@ primary key(id)
 create table session_management(
 id uuid not null,
 user_name varchar not null,
-avatar_id int default 1,
+avatar_id varchar not null,
 quiz_id uuid	
 );
 
