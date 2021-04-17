@@ -1,0 +1,360 @@
+openapi: 3.0.1
+info:
+  title: GenKwiz API
+  description: Interactive quizzing API with questions of multiple engrossing genres.
+  contact:
+    name: Shriram Deshpande
+    url: 'http://genkwiz.com'
+    email: deshpandeshriram@gmail.com
+  license:
+    name: API License
+    url: 'http://genkwiz.com'
+  version: 0.0.2
+servers:
+  - url: 'http://localhost:8080/genkwiz/v1'
+tags:
+  - name: quiz-controller
+    description: Quiz Controller
+paths:
+  /quizzes:
+    post:
+      tags:
+        - quiz-controller
+      description: Creates the quiz with mode and genre opted by the user and returns the Quiz Id.
+      operationId: createQuiz
+      parameters:
+        - name: genre
+          in: query
+          description: Genre of the quiz.(eg.Politics,Sports etc.)
+          required: true
+          schema:
+            type: string
+        - name: mode
+          in: query
+          description: Mode of the questions in the quiz.(Eg.Easy,Medium,Hard)
+          required: true
+          schema:
+           type: string
+           enum :
+            - Easy
+            - Medium
+            - Hard
+          
+        - name: number
+          in: query
+          description: Total number of questions in the quiz.
+          required: false
+          schema:
+            type: integer
+            minimum: 3
+            maximum: 10
+            default: 10
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quizId:
+                    description: Id of the quiz generated.
+                    type: string
+                    format: uuid
+                  
+          links:
+            GetQuizByQuizId:
+              description: >-
+                The 'quizId' value returned in the response can be used as the
+                'quizId' parameter in 'GET /quizzes/{quizId}'.
+              operationId: getQuiz
+              parameters:
+                quizId: '$response.body#/quizId'
+            
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+  '/quizzes/{quizId}':
+    get:
+      tags:
+        - quiz-controller
+      description: Fetch questions,hints and other components of the quiz which is created by User's choice.
+      operationId: getQuiz
+      parameters:
+        - name: quizId
+          in: path
+          description: Id returned on quiz formation which is now used to fetch quiz.
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Quiz'
+                  
+                  
+              
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      deprecated: false
+   
+  '/quizzes/{quizId}/answers/{questionId}':
+    post:
+      tags:
+        - quiz-controller
+      description: Submit the user's answer and display the correct answer.
+      operationId: submitAnswer
+      parameters:
+        - name: quizId
+          in: path
+          description: Id of the quiz currently being played.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: questionId
+          in: path
+          description: Id of question whose answer is to be submitted.
+          required: true
+          schema:
+            type: integer
+        
+      requestBody:
+          description: Details of attempted question 
+          required: true
+          content:
+           application/json:
+            schema:
+             type: object
+             properties:
+              userTime:
+                type: integer
+                format : int32
+              hintsUsed:
+                type: integer
+              isAttempted:
+                type: boolean
+              userAnswer:
+                type: string
+              typeOfQuestion:
+                type: string    
+               
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                 $ref : '#/components/schemas/Answer'  
+         
+            
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {} 
+          
+          
+  '/quizzes/{quizId}/submit':
+    post:
+      tags:
+        - quiz-controller
+      description: Get performance of Entire Quiz.
+      operationId: SubmitFinalPerformance
+      parameters:
+        - name: quizId
+          in: path
+          description: Id of the quiz played.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/Performance'
+                    
+ 
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {} 
+  
+components:
+  schemas:
+    Hint:
+      title: Hint
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        text:
+          type: string
+        marksDeduction:
+          type: integer
+          format: int32
+        multimedia: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Multimedia'
+          
+    Mode:
+      title: Mode
+      type: object
+      properties:
+        maxSore:
+          type: integer
+          format: int32
+        maxTime:
+          $ref: '#/components/schemas/Time'
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          
+    Multimedia:
+      title: Multimedia
+      type: object
+      properties:
+        multiName:
+          type: string
+        multiType:
+          type: string
+        numberOfMultimedia:
+          type: integer
+          format: int32
+        multiId:
+          type: integer
+          format: int32
+        multicontent:
+          type: string
+          format: byte
+          
+    Question:
+      title: Question
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/Mode'
+        genre:
+          type: string
+        id:
+          description: question id required to fetch answer in 'Answer'.
+          type: integer
+          format: int32
+        text:
+          type: string
+        rating:
+          type: number
+          format: float
+        type:
+          type: string
+        hints:
+         type: array
+         items:
+           $ref: '#/components/schemas/Hint'
+        multimedia:
+         type: array
+         items:
+          $ref: '#/components/schemas/Multimedia'
+          
+    Answer:
+      title: Answer
+      type: object
+      properties:
+        questionId:
+          type: integer
+          format: int32
+        text:
+          type: string
+    Quiz:
+      title: Quiz
+      # [ {"question": "What is the Capital of Maharashtra? ","hint":"starts with m",...}, {"question": "What is capital Karnataka? ","hint":"starts with b",...} ]
+      type: object
+      properties:
+       quizId:
+         type: string
+         format: uuid
+       questions:
+        type: array
+        items:
+         $ref: '#/components/schemas/Question'
+      
+    Time:
+      title: Time
+      description: Creation date and time
+      type: object
+      properties:
+        time: 
+         type: string
+         format: date-time
+        
+    Performance:
+      title: Performance
+      type: object
+      properties:
+        numberOfCorrect:
+          type: integer
+          format: int32 
+        quizId:
+          type: integer
+          format: int32  
+        numberOfAttempted:
+          type: integer
+          format: int32
+        totalTime:
+          type: integer
+          format: int32
+        finalScore:
+          type: integer
+          format: int32
