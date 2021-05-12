@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.persistence.PrePersist;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,47 +23,59 @@ public class QuizService {
 
 		@Autowired
 		QuizRepository quizRepository;
-		/*@Autowired
-		private QuestionRepository questionRepo;*/
+		@Autowired
+		private QuestionRepository questionRepo;
 		
 		public List<Quiz> getQuiz(UUID quizId) {
 
 			return quizRepository.findByQuizId(quizId);
 		}
 		
-		public int createQuiz(String genre, int mode, int noOfQuestions) {
+		@Transactional
+		public List<Quiz> createQuiz(String genre, int mode, int noOfQuestions) {
 			UUID uniqueId=UUID.randomUUID();
 			
-			/*List<Question> allQuestions,randomQuestions = new ArrayList<>();
-			allQuestions=questionRepo.findByQGenreAndModeId(genre,mode);
+			List<Question> allQuestions,randomQuestions = new ArrayList<>();
+			allQuestions=questionRepo.getQuestions(genre,mode,noOfQuestions);
 			//Quiz quiz1=new Quiz();
-			
-			
-			SecureRandom rand = new SecureRandom();
+			 
+
+			/*SecureRandom rand = new SecureRandom();
 			    for (int i = 0; i < Math.min(noOfQuestions, allQuestions.size()); i++) {
 			        randomQuestions.add( allQuestions.remove( rand.nextInt( allQuestions.size() ) ));
-			    }
+			    }*/
 			    
-			List<Integer> questionIds=randomQuestions.stream().map(Question::getqId).collect(Collectors.toList());  
+			//List<Integer> questionIds=randomQuestions.stream().map(Question::getqId).collect(Collectors.toList());  
+			
+			List<Integer> questionIds=allQuestions.stream().map(Question::getqId).collect(Collectors.toList());  
+			
+		
 			
 			 List<Quiz> quiz = new ArrayList<>();
 
 			    for (int i = 0; i < noOfQuestions; i++) {
 			        Quiz question = new Quiz();
 			        question.setQuizId(uniqueId);
+			        
+			        
 			        question.setqId(questionIds.get(i));
-			       
-
-			        quiz.add(question);
+			        
+			        
+			        
+			        quiz.add(i,question);
+			        
+			        
 			    }
-
-
+				
+			    
+			    
 			    quizRepository.save(quiz);
-			    return ((Quiz) quiz).getQuizId();*/
+			    
+			    //return ((Quiz) quiz).getQuizId();*/
 			
-			
+			return quiz;
 		    
-			return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
+			//return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
 			}
 	
 	    
