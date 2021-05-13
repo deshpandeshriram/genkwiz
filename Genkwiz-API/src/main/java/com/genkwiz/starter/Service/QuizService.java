@@ -56,23 +56,24 @@ public class QuizService {
 			    for (int i = 0; i < noOfQuestions; i++) {
 			        Quiz question = new Quiz();
 			        question.setQuizId(uniqueId);
-			        
-			        
+			       Question ques=new Question();
+			       ques=questionRepo.findByQId(questionIds.get(i));
+			        question.setQuestions(ques);
 			        question.setqId(questionIds.get(i));
 			        
-			        
+			       // question.setQuestion(quizRepository.findByQuestionId(questionIds.get(i)));
 			        
 			        quiz.add(i,question);
-			        
-			        
+			      quizRepository.save(question);
+			        //quizRepository.addQuiz(question); 
 			    }
+			    
+			    
 				
-			    
-			    
-			    quizRepository.save(quiz);
+			    			 //   quizRepository.save(q);
 			    
 			    //return ((Quiz) quiz).getQuizId();*/
-			
+			 //  quizRepository.save(quiz);
 			return quiz;
 		    
 			//return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
