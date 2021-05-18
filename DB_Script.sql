@@ -57,6 +57,7 @@ create table subjective_answer(
 id bigserial not null,
 question_id int not null,
 answer_value text not null,
+answer_multimedia varchar,
 primary key (id),
 foreign key (question_id) references question_bank(id)
 );
