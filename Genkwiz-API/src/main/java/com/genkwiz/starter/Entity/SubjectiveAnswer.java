@@ -20,6 +20,9 @@ public class SubjectiveAnswer {
 	@Column(name="answer_value")
 	private String answerValue;
 	
+	@Column(name="answer_multimedia")
+	private String answerMultimedia;
+	
 	@OneToOne
 	@JoinColumn(name="question_id", nullable=false)
 	private Question question;
@@ -28,12 +31,17 @@ public class SubjectiveAnswer {
 		
 	}
 	
-	public SubjectiveAnswer(int id, int questionId, String answerValue) {
+	
+	public SubjectiveAnswer(int id, int questionId, String answerValue, String answerMultimedia, Question question) {
 		super();
 		this.id = id;
 		this.questionId = questionId;
 		this.answerValue = answerValue;
+		this.answerMultimedia = answerMultimedia;
+		this.question = question;
 	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -51,6 +59,16 @@ public class SubjectiveAnswer {
 	}
 	public void setAnswerValue(String answerValue) {
 		this.answerValue = answerValue;
+	}
+
+
+	public String getAnswerMultimedia() {
+		return answerMultimedia;
+	}
+
+
+	public void setAnswerMultimedia(String answerMultimedia) {
+		this.answerMultimedia = answerMultimedia;
 	}
 	
 }
