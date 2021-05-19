@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 	@Autowired
 	private QuestionRepository questionRepo;
 	@Autowired
-	private HintRepository hintrepo;
+	private ModeRepository moderepo;
 	
 	//private List<Question> quests=new ArrayList<>(Arrays.asList(
 		//	new Question(278,"","","What is this poster promoting?","hard","history",""),
@@ -67,7 +67,19 @@ import org.springframework.stereotype.Service;
 	public Question getEntireQuestion(int qId) {
 		/*List<Hint> hints=new ArrayList<>();
 				hints=hintrepo.findByQId(qId);*/
-		return questionRepo.findByQId(qId);
+		Question ques=new Question();
+		ques=questionRepo.findByQId(qId);
+		int mId=ques.getModeId();
+		
+		//System.out.println("here  mid................................"+mId);
+		Mode m=new Mode();
+		
+		m=moderepo.findByModeId(mId);
+		System.out.println("here................................"+m);
+		ques.setMode(m);
+		//ques=questionRepo.findByQId(qId);
+		//return questionRepo.findByQId(qId);
+		return ques;
 	}
 	
 }
