@@ -60,7 +60,7 @@ public class QuizService {
 			       ques=questionRepo.findByQId(questionIds.get(i));
 			        question.setQuestions(ques);
 			        question.setqId(questionIds.get(i));
-			        
+			        question.setStatus(Status.NOT_ATTEMPTED);
 			       // question.setQuestion(quizRepository.findByQuestionId(questionIds.get(i)));
 			        
 			        quiz.add(i,question);
