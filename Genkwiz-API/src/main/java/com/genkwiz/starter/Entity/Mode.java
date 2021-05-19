@@ -26,9 +26,9 @@ public class Mode {
 	@Column(name="max_score")
 	private int maxSore;
 	
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name="id",referencedColumnName="mode_id", nullable=false)
-	private Question question;
+	private Question question;*/
 	
 	public Mode() {
 		
