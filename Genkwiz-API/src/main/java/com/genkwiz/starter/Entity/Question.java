@@ -30,7 +30,7 @@ public class Question {
 	
 	
 	@NaturalId
-	@Column(name="mode_id")
+	@Column(name="mode_id",insertable=false,updatable=false)
 	private int modeId;
 	@Column(name="ratings")
 	private float qRatings;
@@ -47,7 +47,7 @@ public class Question {
 	@OneToMany(mappedBy="question")
 	private Set<Multimedia> multimedia;
 	
-	@OneToOne(mappedBy="question")
+	@OneToOne
 	private Mode mode;
 	
 	@OneToOne(mappedBy="question")
