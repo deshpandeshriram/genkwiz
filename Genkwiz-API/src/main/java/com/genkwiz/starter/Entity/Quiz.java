@@ -21,6 +21,15 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+import com.vladmihalcea.hibernate.type.array.EnumArrayType;
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
+import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
+
 @Entity
 @Table(name="quiz")
 /*@SecondaryTables({
@@ -31,6 +40,8 @@ import javax.persistence.Transient;
 	
 })*/
 @IdClass(QuizId.class)
+
+   
 public class Quiz {
 		
 		@Id
@@ -52,18 +63,20 @@ public class Quiz {
 		
 
 	    @Enumerated(EnumType.STRING)
-		@Column(name="current_status")
+		@Column(name="current_status",columnDefinition = "status")
+	    
 		Status status;
+	
 		
 		//@OneToOne(mappedBy="quiz")
-	    @OneToOne
-		private Question questions;
+	   /* @OneToOne
+		private Question questions;*/
 		
 		public Quiz() {
 			
 		}
 		
-		public Quiz(UUID quizId, int qId,Time userTime, int numberofHints, int scorePerQuestion, Status status,Question questions) {
+		public Quiz(UUID quizId, int qId,Time userTime, int numberofHints, int scorePerQuestion, Status status) {
 			super();
 			this.quizId = quizId;
 			this.qId=qId;
@@ -71,7 +84,7 @@ public class Quiz {
 			this.numberofHints = numberofHints;
 			this.scorePerQuestion = scorePerQuestion;
 			this.status = status;
-			this.questions = questions;
+			
 			
 		}
 		
@@ -122,13 +135,13 @@ public class Quiz {
 			this.status = status;
 		}
 
-		public Question getQuestions() {
+/*		public Question getQuestions() {
 			return questions;
 		}
 
 		public void setQuestions(Question questions) {
 			this.questions = questions;
-		}
+		}*/
 
 		public int getqId() {
 			return qId;
