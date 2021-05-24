@@ -15,8 +15,12 @@ import org.springframework.stereotype.Service;
 
 import com.genkwiz.starter.Entity.Question;
 import com.genkwiz.starter.Entity.Quiz;
+import com.genkwiz.starter.Entity.QuizResponse;
+import com.genkwiz.starter.Entity.SessionManagement;
+import com.genkwiz.starter.Entity.Status;
 import com.genkwiz.starter.Repository.QuestionRepository;
 import com.genkwiz.starter.Repository.QuizRepository;
+import com.genkwiz.starter.Repository.SessionRepository;
 
 @Service
 public class QuizService {
@@ -26,13 +30,17 @@ public class QuizService {
 		@Autowired
 		private QuestionRepository questionRepo;
 		
+		@Autowired
+		private SessionRepository sessionrepo;
+		
+		
 		public List<Quiz> getQuiz(UUID quizId) {
 
 			return quizRepository.findByQuizId(quizId);
 		}
 		
 		@Transactional
-		public List<Quiz> createQuiz(String genre, int mode, int noOfQuestions) {
+		public List<QuizResponse> createQuiz(String genre, int mode, int noOfQuestions,UUID SessionId) {
 			UUID uniqueId=UUID.randomUUID();
 			
 			List<Question> allQuestions,randomQuestions = new ArrayList<>();
@@ -52,13 +60,16 @@ public class QuizService {
 		
 			
 			 List<Quiz> quiz = new ArrayList<>();
-
+			 List<QuizResponse> qr=new ArrayList<QuizResponse>();
 			    for (int i = 0; i < noOfQuestions; i++) {
 			        Quiz question = new Quiz();
 			        question.setQuizId(uniqueId);
+			        //question.setStatus();
 			       Question ques=new Question();
 			       ques=questionRepo.findByQId(questionIds.get(i));
-			        question.setQuestions(ques);
+			       
+			      
+			        
 			        question.setqId(questionIds.get(i));
 			        question.setStatus(Status.NOT_ATTEMPTED);
 			       // question.setQuestion(quizRepository.findByQuestionId(questionIds.get(i)));
@@ -66,6 +77,13 @@ public class QuizService {
 			        quiz.add(i,question);
 			      //quizRepository.save(question);
 			        //quizRepository.addQuiz(question); 
+			        
+			        QuizResponse qr1=new QuizResponse();
+			      
+			        qr1.setQuestion(ques);
+			        qr1.setQuiz(quiz.get(i));
+			        qr.add(i,qr1);
+			        
 			    }
 			    
 			    
@@ -74,7 +92,19 @@ public class QuizService {
 			    
 			    //return ((Quiz) quiz).getQuizId();*/
 			  quizRepository.save(quiz);
-			return quiz;
+			 List<SessionManagement> sm1= new ArrayList<SessionManagement>();
+			
+			 for(SessionManagement sm:sm1)
+			 {
+				 sm=sessionrepo.findBySessionIdEquals(SessionId);
+			  if(sm.getQuizId()==null) {
+				  sm.setQuizId(uniqueId);
+			  }
+			 }
+			// sm1.setQuizId(uniqueId);
+			  
+			  
+			return qr;
 		    
 			//return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
 			}
