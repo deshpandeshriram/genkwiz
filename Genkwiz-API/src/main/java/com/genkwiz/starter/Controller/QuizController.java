@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.genkwiz.starter.Entity.Question;
 import com.genkwiz.starter.Entity.Quiz;
+import com.genkwiz.starter.Entity.QuizResponse;
 import com.genkwiz.starter.Service.QuizService;
 
 @RestController
@@ -30,7 +31,7 @@ public class QuizController {
     }
 	
 	@PostMapping("/quizzes")
-	public List<Quiz> createQuiz(@RequestParam(name="genre") String genre,@RequestParam(name="mode_name") String mode,@RequestParam(name="noOfQuestions") int noOfQuestions) {
+	public List<QuizResponse> createQuiz(@RequestParam(name="genre") String genre,@RequestParam(name="mode_name") String mode,@RequestParam(name="noOfQuestions") int noOfQuestions,@RequestParam(name="SessionId") UUID SessionId) {
 		if(mode.equalsIgnoreCase("hard")) {
 			modeID=3;
 		}
@@ -42,7 +43,7 @@ public class QuizController {
 		}
 		
 		
-		return quizService.createQuiz( genre, modeID, noOfQuestions);
+		return quizService.createQuiz( genre, modeID, noOfQuestions,SessionId);
 		
 	}
 	
