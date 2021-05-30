@@ -57,6 +57,7 @@ create table subjective_answer(
 id bigserial not null,
 question_id int not null,
 answer_value text not null,
+answer_multimedia varchar,
 primary key (id),
 foreign key (question_id) references question_bank(id)
 );
@@ -76,28 +77,50 @@ foreign key (question_id) references question_bank(id)
 
 create index index_mcq_answer on mcq_answer (question_id , answer_number);
 
+#creation of uuid for quiz table
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 /*Purpose: Consists information about quizzes to be generated.*/
 create table quiz(
-id int not null,
+id uuid not null,
 question_id int not null,
-time_taken_by_user int not null,
+time_taken_by_user int default 0,
 hints_used int default 0,
 score_per_question int default 0,
-is_attempted varchar (6) not null
+is_attempted varchar (6) default false
 );
 
 create index index_quiz on quiz (question_id , score_per_question);
 
 /*Purpose: Consists information about performance parameters to evaluate users.*/
 create table performance(
-id serial not null,
-user_id varchar not null,
-quiz_id int not null,
+id integer not null,
+quiz_id uuid not null,
 no_of_attempted int not null,
 no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
-total_time_taken int not null,
-primary key (id)
+total_time_taken int not null
+
 );
+
+
+/*Purpose: Consists information about available avatars for user.No longer needed for version 1*/
+create table avatar(
+id serial not null,
+avatar_name varchar not null,
+content bytea not null,
+avatar_type varchar not null, 
+primary key(id)
+);
+
+/*Purpose: Consists information about user's quiz history on genkwiz.com .*/
+create table session_management(
+id uuid not null,
+user_name varchar not null,
+avatar_id varchar not null,
+quiz_id uuid	
+);
+
