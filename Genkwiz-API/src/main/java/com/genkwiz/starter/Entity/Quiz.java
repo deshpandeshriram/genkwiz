@@ -64,7 +64,6 @@ public class Quiz {
 
 	    @Enumerated(EnumType.STRING)
 		@Column(name="current_status",columnDefinition = "status")
-	    
 		Status status;
 	
 		

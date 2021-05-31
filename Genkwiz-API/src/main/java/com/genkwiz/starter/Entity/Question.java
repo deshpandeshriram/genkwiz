@@ -42,7 +42,7 @@ public class Question {
 	private String qType;
 	
 	@OneToMany(mappedBy="question")
-	   private Set<Hint> hint;
+	private Set<Hint> hint;
 	
 	@OneToMany(mappedBy="question")
 	private Set<Multimedia> multimedia;

@@ -19,8 +19,8 @@ public class SessionManagement {
 	private String username;
 	
     
-    @Column(name="avatar_name")
-	private String avatarName;
+    @Column(name="avatar_id")
+	private String avatarId;
 	
     
     @Column(name="quiz_id")
@@ -31,11 +31,11 @@ public class SessionManagement {
     }
     
     
-	public SessionManagement(UUID sessionId, String username, String avatarName, UUID quizId) {
+	public SessionManagement(UUID sessionId, String username, String avatarId, UUID quizId) {
 		super();
 		this.sessionId = sessionId;
 		this.username = username;
-		this.avatarName = avatarName;
+		this.avatarId = avatarId;
 		this.quizId = quizId;
 	}
 
@@ -60,13 +60,13 @@ public class SessionManagement {
 	}
 
 
-	public String getAvatarName() {
-		return avatarName;
+	public String getAvatarId() {
+		return avatarId;
 	}
 
 
-	public void setAvatarName(String avatarId) {
-		this.avatarName = avatarId;
+	public void setAvatarId(String avatarId) {
+		this.avatarId = avatarId;
 	}
 
 

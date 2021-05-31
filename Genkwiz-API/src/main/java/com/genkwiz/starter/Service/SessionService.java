@@ -12,7 +12,7 @@ import com.genkwiz.starter.Repository.SessionRepository;
 public class SessionService {
 
 	@Autowired
-	SessionRepository sessionrepository;
+	SessionRepository sessionRepository;
 
 	/*public SessionManagement createUser(String username, String avatarId) {
 		UUID uuid=UUID.randomUUID();
@@ -21,13 +21,13 @@ public class SessionService {
 		sm.setUsername(username);
 		sm.setAvatarName(avatarId);*/
 		
-	public SessionManagement createUser(SessionManagement sm) {
+	public SessionManagement createSession(SessionManagement sm) {
 	UUID uuid=UUID.randomUUID();
 	//SessionManagement sessm=new SessionManagement();
 	sm.setSessionId(uuid);
 	
 		
-		return sessionrepository.save(sm);
+		return sessionRepository.save(sm);
 		
 	}
 }

@@ -81,6 +81,8 @@ create index index_mcq_answer on mcq_answer (question_id , answer_number);
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+create type status as enum('ATTEMPTED', 'NOT_ATTEMPTED', 'SKIPPED');
+
 -- Purpose: Consists information about quizzes to be generated.
 create table quiz(
 id uuid not null,
@@ -88,6 +90,7 @@ question_id int not null,
 time_taken_by_user int default 0,
 hints_used int default 0,
 score_per_question int default 0,
+current_status status default 'NOT_ATTEMPTED',
 is_attempted varchar (6) default false
 );
 
