@@ -91,7 +91,9 @@ time_taken_by_user int default 0,
 hints_used int default 0,
 score_per_question int default 0,
 current_status status default 'NOT_ATTEMPTED',
-is_attempted varchar (6) default false
+is_correct boolean,
+user_answer varchar,
+serial_number integer  
 );
 
 create index index_quiz on quiz (question_id , score_per_question);
