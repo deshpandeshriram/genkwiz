@@ -24,14 +24,22 @@ public class QuizController {
 	QuizService quizService;
 	
 	int modeID;
-	@GetMapping("/quizzes/{quizId}")
+	
+	@GetMapping("/quizzes/{quizId}/status")
 	public List<Quiz> getQuiz(@PathVariable UUID quizId) {
 	
 			return quizService.getQuiz(quizId) ;
     }
 	
+	@GetMapping("/quizzes/{quizId}/{startingAt}")
+	public List<Question> getQuizStaticDetails(@PathVariable UUID quizId,@PathVariable int startingAt){
+		return quizService.getQuizStaticDetails(quizId,startingAt);
+		
+	}
+	
+	
 	@PostMapping("/quizzes")
-	public List<QuizResponse> createQuiz(@RequestParam(name="genre") String genre,@RequestParam(name="mode_name") String mode,@RequestParam(name="noOfQuestions") int noOfQuestions,@RequestParam(name="SessionId") UUID SessionId) {
+	public UUID createQuiz(@RequestParam(name="genre") String genre,@RequestParam(name="mode_name") String mode,@RequestParam(name="noOfQuestions") int noOfQuestions,@RequestParam(name="SessionId") UUID SessionId) {
 		if(mode.equalsIgnoreCase("hard")) {
 			modeID=3;
 		}
