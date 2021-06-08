@@ -64,9 +64,17 @@ public class Quiz {
 
 	    @Enumerated(EnumType.STRING)
 		@Column(name="current_status",columnDefinition = "status")
+	    
 		Status status;
 	
+	    @Column(name="serial_number")
+		private int serialNumber;
 		
+	    @Column(name="user_answer")
+		private String userAnswer;
+		
+	    @Column(name="is_correct")
+		private boolean isCorrect;
 		//@OneToOne(mappedBy="quiz")
 	   /* @OneToOne
 		private Question questions;*/
@@ -75,19 +83,23 @@ public class Quiz {
 			
 		}
 		
-		public Quiz(UUID quizId, int qId,Time userTime, int numberofHints, int scorePerQuestion, Status status) {
+	
+
+		public Quiz(UUID quizId, int qId, Time userTime, int numberofHints, int scorePerQuestion, Status status,
+				int serialNumber, String userAnswer, boolean isCorrect) {
 			super();
 			this.quizId = quizId;
-			this.qId=qId;
+			this.qId = qId;
 			this.userTime = userTime;
 			this.numberofHints = numberofHints;
 			this.scorePerQuestion = scorePerQuestion;
 			this.status = status;
-			
-			
+			this.serialNumber = serialNumber;
+			this.userAnswer = userAnswer;
+			this.isCorrect = isCorrect;
 		}
-		
-		
+
+
 
 		public UUID getQuizId() {
 			return quizId;
@@ -150,6 +162,44 @@ public class Quiz {
 			this.qId = qId;
 		}
 		
+		
+		
+		public int getSerialNumber() {
+			return serialNumber;
+		}
+
+
+
+		public void setSerialNumber(int serialNumber) {
+			this.serialNumber = serialNumber;
+		}
+
+
+
+		public String getUserAnswer() {
+			return userAnswer;
+		}
+
+
+
+		public void setUserAnswer(String userAnswer) {
+			this.userAnswer = userAnswer;
+		}
+
+
+
+		public boolean isCorrect() {
+			return isCorrect;
+		}
+
+
+
+		public void setCorrect(boolean isCorrect) {
+			this.isCorrect = isCorrect;
+		}
+
+
+
 		@Override
 		  public String toString() {
 		      return "Quiz [Quiz Id=" + this.quizId + ", usertime=" + this.userTime + ", QuestionId=" + this.qId + ", Attempted or not=" +this.status + "]";
