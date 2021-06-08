@@ -39,4 +39,8 @@ public interface QuizRepository extends CrudRepository<Quiz,QuizId>{
 	 void createQuiz();*/
 
 //Query:"insert into quiz (id) values(:uuid);"+"insert into quiz(question_id) select id from question_bank where question_bank.genre = :genre and question_bank.mode_id = :modeId"
+
+
+  Quiz findByQuizIdAndSerialNumber(UUID quizId,int startingAt);
+
 }
