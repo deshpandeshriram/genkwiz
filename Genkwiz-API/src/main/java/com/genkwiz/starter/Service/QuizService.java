@@ -40,7 +40,7 @@ public class QuizService {
 		}
 		
 		@Transactional
-		public List<QuizResponse> createQuiz(String genre, int mode, int noOfQuestions,UUID SessionId) {
+		public UUID createQuiz(String genre, int mode, int noOfQuestions,UUID SessionId) {
 			UUID uniqueId=UUID.randomUUID();
 			
 			List<Question> allQuestions,randomQuestions = new ArrayList<>();
@@ -65,6 +65,7 @@ public class QuizService {
 			        Quiz question = new Quiz();
 			        question.setQuizId(uniqueId);
 			        //question.setStatus();
+			        question.setSerialNumber(i+1);
 			       Question ques=new Question();
 			       ques=questionRepo.findByQId(questionIds.get(i));
 			       
@@ -104,12 +105,39 @@ public class QuizService {
 			// sm1.setQuizId(uniqueId);
 			  
 			  
-			return qr;
+			//return qr;
 		    
-			//return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
+			 return uniqueId;
+			 //return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
 			}
+
+		public List<Question> getQuizStaticDetails(UUID quizId, int startingAt) {
+			/*List<Quiz> quiz=new ArrayList<Quiz>();
+			quiz=quizRepository.findByQuizId(quizId);
+			List<Integer> quesIds=new ArrayList<Integer>();*/
+			//int k=0;
+			List<Quiz> quiz=new ArrayList<Quiz>();
+			Quiz qu=new Quiz();
+		
+			int size=quizRepository.findByQuizId(quizId).size();
+			for(int j=startingAt;j<=size;j++) {
+			 
+				qu=quizRepository.findByQuizIdAndSerialNumber(quizId,j);
+				quiz.add(qu);
+			}
+			List<Integer> quesIds=quiz.stream().map(Quiz::getqId).collect(Collectors.toList());  
+			List<Question> quesStaticDetails=new ArrayList<Question>();
+			
+			for(int i=0;i<quesIds.size();i++)
+			{ 
+				Question ques=new Question();
+				 ques= questionRepo.findByQId(quesIds.get(i));
+				quesStaticDetails.add(ques);
+			}
+			return quesStaticDetails;
+		}
 	
-	    
+	   
 }
 			
  
