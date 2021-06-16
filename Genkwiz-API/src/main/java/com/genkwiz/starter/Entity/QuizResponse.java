@@ -3,14 +3,13 @@ package com.genkwiz.starter.Entity;
 public class QuizResponse {
 
 	private Quiz quiz;
-	
+
 	private Question question;
 
-	public QuizResponse(){
-		
+	public QuizResponse() {
+
 	}
-	
-	
+
 	public QuizResponse(Quiz quiz, Question question) {
 		super();
 		this.quiz = quiz;
@@ -32,6 +31,5 @@ public class QuizResponse {
 	public void setQuestion(Question question) {
 		this.question = question;
 	}
-	
-	
+
 }

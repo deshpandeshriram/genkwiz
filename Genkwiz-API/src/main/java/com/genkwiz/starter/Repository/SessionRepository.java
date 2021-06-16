@@ -6,10 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.genkwiz.starter.Entity.SessionManagement;
 
-public interface SessionRepository extends CrudRepository<SessionManagement,UUID>{
+public interface SessionRepository extends CrudRepository<SessionManagement, UUID> {
 
-	
 	SessionManagement findBySessionIdEquals(UUID SessionId);
 
-		
 }

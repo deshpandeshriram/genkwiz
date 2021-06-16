@@ -6,26 +6,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="avatar")
+@Table(name = "avatar")
 public class Avatar {
 	@Id
-    @Column(name="id")
+	@Column(name = "id")
 	private int avatarId;
-	
-	@Column(name="avatar_name")
+
+	@Column(name = "avatar_name")
 	private String avatarName;
-	
-	@Column(name="content")
+
+	@Column(name = "content")
 	private byte[] content;
-	
-	@Column(name="avatar_type")
+
+	@Column(name = "avatar_type")
 	private String avatarType;
 
-	
 	public Avatar() {
-		
+
 	}
-	
+
 	public Avatar(int avatarId, String avatarName, byte[] content, String avatarType) {
 		super();
 		this.avatarId = avatarId;
@@ -65,6 +64,5 @@ public class Avatar {
 	public void setAvatarType(String avatarType) {
 		this.avatarType = avatarType;
 	}
-	
-	
+
 }

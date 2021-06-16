@@ -11,61 +11,64 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="question_mode")
+@Table(name = "question_mode")
 public class Mode {
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	private int modeId;
-	
-	@Column(name="mode_name")
+
+	@Column(name = "mode_name")
 	private String modeName;
-	
-	@Column(name="max_time")
+
+	@Column(name = "max_time")
 	private int maxTime;
-	
-	@Column(name="max_score")
+
+	@Column(name = "max_score")
 	private int maxSore;
-	
-	/*@OneToOne
-	@JoinColumn(name="id",referencedColumnName="mode_id", nullable=false)
-	private Question question;*/
-	
+
+
 	public Mode() {
-		
+
 	}
-	
+
 	public Mode(int modeId, String modeName, int maxTime, int maxSore) {
-	super();
-	this.modeId = modeId;
-	this.modeName = modeName;
-	this.maxTime = maxTime;
-	this.maxSore = maxSore;
+		super();
+		this.modeId = modeId;
+		this.modeName = modeName;
+		this.maxTime = maxTime;
+		this.maxSore = maxSore;
 	}
+
 	public int getModeId() {
-	return modeId;
+		return modeId;
 	}
+
 	public void setModeId(int modeId) {
-	this.modeId = modeId;
+		this.modeId = modeId;
 	}
+
 	public String getModeName() {
-	return modeName;
+		return modeName;
 	}
+
 	public void setModeName(String modeName) {
-	this.modeName = modeName;
+		this.modeName = modeName;
 	}
+
 	public int getMaxTime() {
-	return maxTime;
+		return maxTime;
 	}
+
 	public void setMaxTime(int maxTime) {
-	this.maxTime = maxTime;
+		this.maxTime = maxTime;
 	}
+
 	public int getMaxSore() {
-	return maxSore;
+		return maxSore;
 	}
+
 	public void setMaxSore(int maxSore) {
-	this.maxSore = maxSore;
+		this.maxSore = maxSore;
 	}
- 
- 
- 
+
 }

@@ -16,144 +16,118 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NaturalId;
 
-
-
 @Entity
-@Table(name="question_bank")
+@Table(name = "question_bank")
 
 public class Question {
-	
-	@Column(name="id")
+
+	@Column(name = "id")
 	@Id
-	private int qId;
-	
-	
-	
+	private int questionId;
+
 	@NaturalId
-	@Column(name="mode_id",insertable=false,updatable=false)
+	@Column(name = "mode_id", insertable = false, updatable = false)
 	private int modeId;
-	@Column(name="ratings")
-	private float qRatings;
-	@Column(name="question")
-	private String qQuestion;
-	@Column(name="genre")
-	private String qGenre;
-	@Column(name="type")
-	private String qType;
-	
-	@OneToMany(mappedBy="question")
-	private Set<Hint> hint;
-	
-	@OneToMany(mappedBy="question")
+	@Column(name = "ratings")
+	private float questionRatings;
+	@Column(name = "question")
+	private String questionText;
+	@Column(name = "genre")
+	private String questionGenre;
+	@Column(name = "type")
+	private String questionType;
+
+	@OneToMany(mappedBy = "question")
+	private Set<Hint> hints;
+
+	@OneToMany(mappedBy = "question")
 	private Set<Multimedia> multimedia;
-	
+
 	@OneToOne
 	private Mode mode;
-	
-	@OneToOne(mappedBy="question")
-	private SubjectiveAnswer subAnswer;
-	
-	@OneToMany(mappedBy="question")
-	private Set<MCQAnswer> mcqoptions;
-	
-	/* @OneToOne
-	 @JoinColumn(name="id",nullable=false)
-	 private Quiz quiz;*/
-	
-	public Question() {
-		
-	}
-	
-	
 
-	public Question(int qId, int modeId, float qRatings, String qQuestion, String qGenre, String qType, Set<Hint> hint,
-			Set<Multimedia> multimedia, Mode mode, SubjectiveAnswer subAnswer, Set<MCQAnswer> mcqoptions) {
+	@OneToOne(mappedBy = "question")
+	private SubjectiveAnswer subjectiveAnswer;
+
+	@OneToMany(mappedBy = "question")
+	private Set<MCQAnswer> mcqOptions;
+
+
+	public Question() {
+
+	}
+
+	public Question(int questionId, int modeId, float questionRatings, String questionText, String questionGenre,
+			String questionType, Set<Hint> hints, Set<Multimedia> multimedia, Mode mode,
+			SubjectiveAnswer subjectiveAnswer, Set<MCQAnswer> mcqOptions) {
 		super();
-		this.qId = qId;
+		this.questionId = questionId;
 		this.modeId = modeId;
-		this.qRatings = qRatings;
-		this.qQuestion = qQuestion;
-		this.qGenre = qGenre;
-		this.qType = qType;
-		this.hint = hint;
+		this.questionRatings = questionRatings;
+		this.questionText = questionText;
+		this.questionGenre = questionGenre;
+		this.questionType = questionType;
+		this.hints = hints;
 		this.multimedia = multimedia;
 		this.mode = mode;
-		this.subAnswer = subAnswer;
-		this.mcqoptions = mcqoptions;
+		this.subjectiveAnswer = subjectiveAnswer;
+		this.mcqOptions = mcqOptions;
 	}
 
-
-
-
-
-
-
-
-	public int getqId() {
-		return qId;
+	public int getQuestionId() {
+		return questionId;
 	}
 
-
-	public void setqId(int qId) {
-		this.qId = qId;
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
-
 
 	public int getModeId() {
 		return modeId;
 	}
 
-
 	public void setModeId(int modeId) {
 		this.modeId = modeId;
 	}
 
-
-	public float getqRatings() {
-		return qRatings;
+	public float getQuestionRatings() {
+		return questionRatings;
 	}
 
-
-	public void setqRatings(float qRatings) {
-		this.qRatings = qRatings;
+	public void setQuestionRatings(float questionRatings) {
+		this.questionRatings = questionRatings;
 	}
 
-
-	public String getqQuestion() {
-		return qQuestion;
+	public String getQuestionText() {
+		return questionText;
 	}
 
-
-	public void setqQuestion(String qQuestion) {
-		this.qQuestion = qQuestion;
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
 	}
 
-
-	public String getqGenre() {
-		return qGenre;
+	public String getQuestionGenre() {
+		return questionGenre;
 	}
 
-
-	public void setqGenre(String qGenre) {
-		this.qGenre = qGenre;
+	public void setQuestionGenre(String questionGenre) {
+		this.questionGenre = questionGenre;
 	}
 
-
-	public String getqType() {
-		return qType;
+	public String getQuestionType() {
+		return questionType;
 	}
 
-
-	public void setqType(String qType) {
-		this.qType = qType;
+	public void setQuestionType(String questionType) {
+		this.questionType = questionType;
 	}
 
-	public Set<Hint> getHint() {
-		return hint;
+	public Set<Hint> getHints() {
+		return hints;
 	}
 
-	public void setHint(Set<Hint> hint) {
-		this.hint = hint;
+	public void setHints(Set<Hint> hints) {
+		this.hints = hints;
 	}
 
 	public Set<Multimedia> getMultimedia() {
@@ -172,23 +146,20 @@ public class Question {
 		this.mode = mode;
 	}
 
-
-	public SubjectiveAnswer getSubAnswer() {
-		return subAnswer;
+	public SubjectiveAnswer getSubjectiveAnswer() {
+		return subjectiveAnswer;
 	}
 
-	public void setSubAnswer(SubjectiveAnswer subAnswer) {
-		this.subAnswer = subAnswer;
+	public void setSubjectiveAnswer(SubjectiveAnswer subjectiveAnswer) {
+		this.subjectiveAnswer = subjectiveAnswer;
 	}
 
-	public Set<MCQAnswer> getMcqoptions() {
-		return mcqoptions;
+	public Set<MCQAnswer> getMcqOptions() {
+		return mcqOptions;
 	}
 
-	public void setMcqoptions(Set<MCQAnswer> mcqoptions) {
-		this.mcqoptions = mcqoptions;
+	public void setMcqOptions(Set<MCQAnswer> mcqOptions) {
+		this.mcqOptions = mcqOptions;
 	}
 
-
-	
 }

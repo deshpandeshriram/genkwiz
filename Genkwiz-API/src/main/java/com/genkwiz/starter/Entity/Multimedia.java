@@ -8,82 +8,89 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="multimedia")
-public class Multimedia 
-{	@Id
-	@Column(name="id")
-	private int multiId;
-	
-	@Column(name="question_id",insertable=false,updatable=false)
-	private int qId;
-	
-	@Column(name="multimedia_number")
-	private int mNumber;
-	
-	@Column(name="multimedia_type")
-	private String multiType;
-	
-	@Column(name="multimedia_content")
-	private byte[] qMultimedia;
-	
+@Table(name = "multimedia")
+public class Multimedia {
+	@Id
+	@Column(name = "id")
+	private int multimediaId;
+
+	@Column(name = "question_id", insertable = false, updatable = false)
+	private int questionId;
+
+	@Column(name = "multimedia_number")
+	private int multimediaNumber;
+
+	@Column(name = "multimedia_type")
+	private String multimediaType;
+
+	@Column(name = "multimedia_content")
+	private String multimediaContent;
+
 	@ManyToOne
-	@JoinColumn(name="question_id", nullable=false)
+	@JoinColumn(name = "question_id", nullable = false)
 	private Question question;
-	
+
 	public Multimedia() {
-		
+
 	}
 
-	public Multimedia(int multiId, int qId, int mNumber, String multiType, byte[] qMultimedia) {
+	public Multimedia(int multimediaId, int questionId, int multimediaNumber, String multimediaType,
+			String multimediaContent, Question question) {
 		super();
-		this.multiId = multiId;
-		this.qId = qId;
-		this.mNumber = mNumber;
-		this.multiType = multiType;
-		this.qMultimedia = qMultimedia;
+		this.multimediaId = multimediaId;
+		this.questionId = questionId;
+		this.multimediaNumber = multimediaNumber;
+		this.multimediaType = multimediaType;
+		this.multimediaContent = multimediaContent;
+		this.question = question;
 	}
 
-	public int getMultiId() {
-		return multiId;
+	public int getMultimediaId() {
+		return multimediaId;
 	}
 
-	public void setMultiId(int multiId) {
-		this.multiId = multiId;
+	public void setMultimediaId(int multimediaId) {
+		this.multimediaId = multimediaId;
 	}
 
-	public int getqId() {
-		return qId;
+	public int getQuestionId() {
+		return questionId;
 	}
 
-	public void setqId(int qId) {
-		this.qId = qId;
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
 
-	public int getmNumber() {
-		return mNumber;
+	public int getMultimediaNumber() {
+		return multimediaNumber;
 	}
 
-	public void setmNumber(int mNumber) {
-		this.mNumber = mNumber;
+	public void setMultimediaNumber(int multimediaNumber) {
+		this.multimediaNumber = multimediaNumber;
 	}
 
-	public String getMultiType() {
-		return multiType;
+	public String getMultimediaType() {
+		return multimediaType;
 	}
 
-	public void setMultiType(String multiType) {
-		this.multiType = multiType;
+	public void setMultimediaType(String multimediaType) {
+		this.multimediaType = multimediaType;
 	}
 
-	public byte[] getqMultimedia() {
-		return qMultimedia;
+	public String getMultimediaContent() {
+		return multimediaContent;
 	}
 
-	public void setqMultimedia(byte[] qMultimedia) {
-		this.qMultimedia = qMultimedia;
+	public void setMultimediaContent(String multimediaContent) {
+		this.multimediaContent = multimediaContent;
 	}
-	 
-	
-	
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
 }
-

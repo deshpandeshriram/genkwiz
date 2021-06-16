@@ -10,109 +10,105 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="question_hint")
+@Table(name = "question_hint")
 public class Hint {
-		
-	    @Id
-	    @Column(name="id")
-		private int hintId;
-		
-	    @Column(name="question_id",insertable=false,updatable=false)
-		private int qId;
-		
-	    @Column(name="hint_number")
-		private int hintNumber;
-		
-	    @Column(name="value")
-		private String hintValue;
-		
-	    @Column(name="marks_deduction")
-		private int marksDeduction;
-		
-	    @Column(name="multimedia_content")
-		private String hintMedia;
-		
-	    @Column(name="multimedia_type")
-		private String hintMediaType;
-	    
-	    @ManyToOne
-	    @JoinColumn(name="question_id", nullable=false)
-	    private Question question;
-	    
-	    public Hint() {
-	    	
-	    }
-	    
 
+	@Id
+	@Column(name = "id")
+	private int hintId;
 
-		public Hint(int hintId, int qId, int hintNumber, String hintValue, int marksDeduction, String hintMedia,
-				String hintMediaType) {
-			super();
-			this.hintId = hintId;
-			this.qId = qId;
-			this.hintNumber = hintNumber;
-			this.hintValue = hintValue;
-			this.marksDeduction = marksDeduction;
-			this.hintMedia = hintMedia;
-			this.hintMediaType = hintMediaType;
-		}
+	@Column(name = "question_id", insertable = false, updatable = false)
+	private int questionId;
 
+	@Column(name = "hint_number")
+	private int hintNumber;
 
-		public int getHintId() {
-			return hintId;
-		}
+	@Column(name = "value")
+	private String hintValue;
 
-		public void setHintId(int hintId) {
-			this.hintId = hintId;
-		}
+	@Column(name = "marks_deduction")
+	private int marksDeduction;
 
-		public int getqId() {
-			return qId;
-		}
+	@Column(name = "multimedia_content")
+	private String hintMedia;
 
-		public void setqId(int qId) {
-			this.qId = qId;
-		}
+	@Column(name = "multimedia_type")
+	private String hintMediaType;
 
-		public int getHintNumber() {
-			return hintNumber;
-		}
+	@ManyToOne
+	@JoinColumn(name = "question_id", nullable = false)
+	private Question question;
 
-		public void setHintNumber(int hintNumber) {
-			this.hintNumber = hintNumber;
-		}
+	public Hint() {
 
-		public String getHintValue() {
-			return hintValue;
-		}
+	}
 
-		public void setHintValue(String hintValue) {
-			this.hintValue = hintValue;
-		}
+	public Hint(int hintId, int questionId, int hintNumber, String hintValue, int marksDeduction, String hintMedia,
+			String hintMediaType) {
+		super();
+		this.hintId = hintId;
+		this.questionId = questionId;
+		this.hintNumber = hintNumber;
+		this.hintValue = hintValue;
+		this.marksDeduction = marksDeduction;
+		this.hintMedia = hintMedia;
+		this.hintMediaType = hintMediaType;
+	}
 
-		public int getMarksDeduction() {
-			return marksDeduction;
-		}
+	public int getHintId() {
+		return hintId;
+	}
 
-		public void setMarksDeduction(int marksDeduction) {
-			this.marksDeduction = marksDeduction;
-		}
+	public void setHintId(int hintId) {
+		this.hintId = hintId;
+	}
 
-		public String getHintMedia() {
-			return hintMedia;
-		}
+	public int getquestionId() {
+		return questionId;
+	}
 
-		public void setHintMedia(String hintMedia) {
-			this.hintMedia = hintMedia;
-		}
+	public void setquestionId(int questionId) {
+		this.questionId = questionId;
+	}
 
-		public String getHintMediaType() {
-			return hintMediaType;
-		}
+	public int getHintNumber() {
+		return hintNumber;
+	}
 
-		public void setHintMediaType(String hintMediaType) {
-			this.hintMediaType = hintMediaType;
-		}
-	    
-	    
+	public void setHintNumber(int hintNumber) {
+		this.hintNumber = hintNumber;
+	}
+
+	public String getHintValue() {
+		return hintValue;
+	}
+
+	public void setHintValue(String hintValue) {
+		this.hintValue = hintValue;
+	}
+
+	public int getMarksDeduction() {
+		return marksDeduction;
+	}
+
+	public void setMarksDeduction(int marksDeduction) {
+		this.marksDeduction = marksDeduction;
+	}
+
+	public String getHintMedia() {
+		return hintMedia;
+	}
+
+	public void setHintMedia(String hintMedia) {
+		this.hintMedia = hintMedia;
+	}
+
+	public String getHintMediaType() {
+		return hintMediaType;
+	}
+
+	public void setHintMediaType(String hintMediaType) {
+		this.hintMediaType = hintMediaType;
+	}
+
 }

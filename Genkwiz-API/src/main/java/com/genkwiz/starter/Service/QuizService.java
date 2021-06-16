@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.genkwiz.starter.Entity.Question;
 import com.genkwiz.starter.Entity.Quiz;
 import com.genkwiz.starter.Entity.QuizResponse;
@@ -25,122 +24,83 @@ import com.genkwiz.starter.Repository.SessionRepository;
 @Service
 public class QuizService {
 
-		@Autowired
-		QuizRepository quizRepository;
-		@Autowired
-		private QuestionRepository questionRepo;
-		
-		@Autowired
-		private SessionRepository sessionrepo;
-		
-		
-		public List<Quiz> getQuiz(UUID quizId) {
+	@Autowired
+	QuizRepository quizRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
 
-			return quizRepository.findByQuizId(quizId);
+	@Autowired
+	private SessionRepository sessionRepository;
+
+	public List<Quiz> getQuiz(UUID quizId) {
+
+		return quizRepository.findByQuizId(quizId);
+	}
+
+	@Transactional
+	public UUID createQuiz(String genre, int mode, int noOfQuestions, UUID SessionId) {
+		UUID uniqueQuizId = UUID.randomUUID();
+
+		List<Question> questions = new ArrayList<>();
+		questions = questionRepository.getQuestions(genre, mode, noOfQuestions);
+
+		List<Integer> questionIds = questions.stream()
+				.map(Question::getQuestionId)
+				.collect(Collectors.toList());
+
+		List<Quiz> quizzes = new ArrayList<>();
+		
+		for (int i = 0; i < noOfQuestions; i++) {
+			Quiz quiz = new Quiz();
+			quiz.setQuizId(uniqueQuizId);
+
+			quiz.setSerialNumber(i + 1);
+			Question question = new Question();
+			question = questionRepository.findByQuestionId(questionIds.get(i));
+
+			quiz.setQuestionId(questionIds.get(i));
+			quiz.setStatus(Status.NOT_ATTEMPTED);
+
+			quizzes.add(i, quiz);
+
 		}
-		
-		@Transactional
-		public UUID createQuiz(String genre, int mode, int noOfQuestions,UUID SessionId) {
-			UUID uniqueId=UUID.randomUUID();
-			
-			List<Question> allQuestions,randomQuestions = new ArrayList<>();
-			allQuestions=questionRepo.getQuestions(genre,mode,noOfQuestions);
-			//Quiz quiz1=new Quiz();
-			 
 
-			/*SecureRandom rand = new SecureRandom();
-			    for (int i = 0; i < Math.min(noOfQuestions, allQuestions.size()); i++) {
-			        randomQuestions.add( allQuestions.remove( rand.nextInt( allQuestions.size() ) ));
-			    }*/
-			    
-			//List<Integer> questionIds=randomQuestions.stream().map(Question::getqId).collect(Collectors.toList());  
-			
-			List<Integer> questionIds=allQuestions.stream().map(Question::getqId).collect(Collectors.toList());  
-			
-		
-			
-			 List<Quiz> quiz = new ArrayList<>();
-			 List<QuizResponse> qr=new ArrayList<QuizResponse>();
-			    for (int i = 0; i < noOfQuestions; i++) {
-			        Quiz question = new Quiz();
-			        question.setQuizId(uniqueId);
-			        //question.setStatus();
-			        question.setSerialNumber(i+1);
-			       Question ques=new Question();
-			       ques=questionRepo.findByQId(questionIds.get(i));
-			       
-			      
-			        
-			        question.setqId(questionIds.get(i));
-			        question.setStatus(Status.NOT_ATTEMPTED);
-			       // question.setQuestion(quizRepository.findByQuestionId(questionIds.get(i)));
-			        
-			        quiz.add(i,question);
-			      //quizRepository.save(question);
-			        //quizRepository.addQuiz(question); 
-			        
-			        QuizResponse qr1=new QuizResponse();
-			      
-			        qr1.setQuestion(ques);
-			        qr1.setQuiz(quiz.get(i));
-			        qr.add(i,qr1);
-			        
-			    }
-			    
-			    
-				
-			    			 //   quizRepository.save(q);
-			    
-			    //return ((Quiz) quiz).getQuizId();*/
-			  quizRepository.save(quiz);
-			 List<SessionManagement> sm1= new ArrayList<SessionManagement>();
-			
-			 for(SessionManagement sm:sm1)
-			 {
-				 sm=sessionrepo.findBySessionIdEquals(SessionId);
-			  if(sm.getQuizId()==null) {
-				  sm.setQuizId(uniqueId);
-			  }
-			 }
-			// sm1.setQuizId(uniqueId);
-			  
-			  
-			//return qr;
-		    
-			 return uniqueId;
-			 //return quizRepository.createQuiz(genre,mode,noOfQuestions,uniqueId);
-			}
+		quizRepository.save(quizzes);
+		List<SessionManagement> sessionMgmt = new ArrayList<SessionManagement>();
 
-		public List<Question> getQuizStaticDetails(UUID quizId, int startingAt) {
-			/*List<Quiz> quiz=new ArrayList<Quiz>();
-			quiz=quizRepository.findByQuizId(quizId);
-			List<Integer> quesIds=new ArrayList<Integer>();*/
-			//int k=0;
-			List<Quiz> quiz=new ArrayList<Quiz>();
-			Quiz qu=new Quiz();
-		
-			int size=quizRepository.findByQuizId(quizId).size();
-			for(int j=startingAt;j<=size;j++) {
-			 
-				qu=quizRepository.findByQuizIdAndSerialNumber(quizId,j);
-				quiz.add(qu);
+		for (SessionManagement s : sessionMgmt) {
+			s = sessionRepository.findBySessionIdEquals(SessionId);
+			if (s.getQuizId() == null) {
+				s.setQuizId(uniqueQuizId);
 			}
-			List<Integer> quesIds=quiz.stream().map(Quiz::getqId).collect(Collectors.toList());  
-			List<Question> quesStaticDetails=new ArrayList<Question>();
-			
-			for(int i=0;i<quesIds.size();i++)
-			{ 
-				Question ques=new Question();
-				 ques= questionRepo.findByQId(quesIds.get(i));
-				quesStaticDetails.add(ques);
-			}
-			return quesStaticDetails;
 		}
-	
-	   
+
+		return uniqueQuizId;
+
+	}
+
+	public List<Question> getQuizStaticDetails(UUID quizId, int startingAt) {
+
+		List<Quiz> quizzes = new ArrayList<Quiz>();
+		Quiz quiz = new Quiz();
+		int size = quizRepository.findByQuizId(quizId)
+				.size();
+		for (int j = startingAt; j <= size; j++) {
+
+			quiz = quizRepository.findByQuizIdAndSerialNumber(quizId, j);
+			quizzes.add(quiz);
+		}
+		List<Integer> questionIds = quizzes.stream()
+				.map(Quiz::getQuestionId)
+				.collect(Collectors.toList());
+		List<Question> questionStaticDetails = new ArrayList<Question>();
+
+		for (int i = 0; i < questionIds.size(); i++) {
+			Question question = new Question();
+			question = questionRepository.findByQuestionId(questionIds.get(i));
+			questionStaticDetails.add(question);
+		}
+		return questionStaticDetails;
+	}
+
 }
-			
- 
-
-		
-

@@ -16,13 +16,10 @@ import com.genkwiz.starter.Service.MultimediaService;
 public class MultimediaController {
 
 	@Autowired
-	 private MultimediaService multimediaservice;
-	
-	
-		public List<Multimedia> getAlldata(@PathVariable int qId ) throws IOException {
-			return multimediaservice.getAllData(qId);
-		}
-		
-		
-		
+	private MultimediaService multimediaservice;
+
+	public List<Multimedia> getAlldata(@PathVariable int questionId) throws IOException {
+		return multimediaservice.getAllData(questionId);
+	}
+
 }

@@ -9,11 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.genkwiz.starter.Entity.Mode;
 import com.genkwiz.starter.Entity.Question;
 
-public interface ModeRepository extends CrudRepository<Mode,Integer> {
+public interface ModeRepository extends CrudRepository<Mode, Integer> {
 
 	Mode findByModeId(int modeId);
 
-	
-	
-	
 }

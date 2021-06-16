@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.genkwiz.starter.Entity.Avatar;
 
-
-public interface AvatarRepository extends CrudRepository<Avatar,Integer > {
+public interface AvatarRepository extends CrudRepository<Avatar, Integer> {
 
 }

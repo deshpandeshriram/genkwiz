@@ -12,13 +12,13 @@ import com.genkwiz.starter.Service.HintService;
 
 @RestController
 public class AvatarController {
-	
+
 	@Autowired
 	private AvatarService avatarservice;
-	
+
 	@GetMapping("/avatars")
-	public List<Avatar> getAllAvatar(){
+	public List<Avatar> getAllAvatar() {
 		return avatarservice.getAllAvatar();
 	}
-	
+
 }

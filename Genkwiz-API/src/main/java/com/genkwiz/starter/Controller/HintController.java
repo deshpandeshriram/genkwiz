@@ -10,18 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.genkwiz.starter.Entity.Hint;
 import com.genkwiz.starter.Service.HintService;
 
-
 @RestController
 public class HintController {
 
 	@Autowired
 	private HintService hintservice;
-	
-	
-	public List<Hint> getMode(@PathVariable Integer qId) {
-		return hintservice.getHint(qId);
+
+	public List<Hint> getMode(@PathVariable Integer questionId) {
+		return hintservice.getHint(questionId);
 	}
-	
-	
-	
+
 }

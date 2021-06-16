@@ -19,22 +19,16 @@ public class ModeService {
 
 	@Autowired
 	private ModeRepository modeRepository;
-	
-	
-	
+
 	public Mode getMode(int modeId) {
-		// TODO Auto-generated method stub
+
 		return modeRepository.findByModeId(modeId);
 	}
-	
-	
-	public void addModes(Mode mode1,Mode mode2,Mode mode3) {
+
+	public void addModes(Mode mode1, Mode mode2, Mode mode3) {
 		modeRepository.save(mode1);
 		modeRepository.save(mode2);
 		modeRepository.save(mode3);
 	}
-	
-	
-	
-	
+
 }

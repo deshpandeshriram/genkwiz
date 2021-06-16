@@ -14,13 +14,13 @@ import com.genkwiz.starter.Repository.AvatarRepository;
 public class AvatarService {
 
 	@Autowired
-	AvatarRepository avatarRepository ;
+	AvatarRepository avatarRepository;
 
 	public List<Avatar> getAllAvatar() {
-		
-		List<Avatar> avatars=new ArrayList<>();
+
+		List<Avatar> avatars = new ArrayList<>();
 		avatarRepository.findAll().forEach(avatars::add);
 		return avatars;
-		
+
 	}
 }

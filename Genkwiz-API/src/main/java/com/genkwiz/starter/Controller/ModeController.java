@@ -25,20 +25,20 @@ public class ModeController {
 
 	@Autowired
 	private ModeService modeservice;
-	
-	
+
+	// @GetMapping("/get/mode/{modeId}")
 	public Mode getMode(@PathVariable int modeId) {
 		return modeservice.getMode(modeId);
 	}
-	
-	Mode modefirst=new Mode(1,"Easy",55,10);
-	Mode modesecond=new Mode(2,"Medium",75,20);
-	Mode modethird=new Mode(3,"Hard",120,30);
-	
-	//@RequestMapping(value="/modes/post",method=RequestMethod.POST)
-	public void addModes(Mode mode1,Mode mode2,Mode mode3) {
 
-		modeservice.addModes(modefirst,modesecond,modethird);
+	Mode modefirst = new Mode(1, "Easy", 55, 10);
+	Mode modesecond = new Mode(2, "Medium", 75, 20);
+	Mode modethird = new Mode(3, "Hard", 120, 30);
+
+	// @RequestMapping(value="/modes/post",method=RequestMethod.POST)
+	public void addModes(Mode mode1, Mode mode2, Mode mode3) {
+
+		modeservice.addModes(modefirst, modesecond, modethird);
 
 	}
 }

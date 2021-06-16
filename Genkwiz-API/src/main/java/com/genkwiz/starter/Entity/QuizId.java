@@ -4,20 +4,18 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class QuizId implements Serializable {
-private UUID quizId;
+	private UUID quizId;
 
-private int qId;
+	private int questionId;
 
-QuizId(){
-	
+	QuizId() {
+
+	}
+
+	public QuizId(UUID quizId, int questionId) {
+		super();
+		this.quizId = quizId;
+		this.questionId = questionId;
+	}
+
 }
-
-public QuizId(UUID quizId, int qId) {
-	super();
-	this.quizId = quizId;
-	this.qId = qId;
-}
-	
-	
-}
-

@@ -19,45 +19,37 @@ import com.genkwiz.starter.Service.QuizService;
 
 @RestController
 public class QuizController {
-	
+
 	@Autowired
 	QuizService quizService;
-	
+
 	int modeID;
-	
+
 	@GetMapping("/quizzes/{quizId}/status")
 	public List<Quiz> getQuiz(@PathVariable UUID quizId) {
-	
-			return quizService.getQuiz(quizId) ;
-    }
-	
+
+		return quizService.getQuiz(quizId);
+	}
+
 	@GetMapping("/quizzes/{quizId}/{startingAt}")
-	public List<Question> getQuizStaticDetails(@PathVariable UUID quizId,@PathVariable int startingAt){
-		return quizService.getQuizStaticDetails(quizId,startingAt);
-		
+	public List<Question> getQuizStaticDetails(@PathVariable UUID quizId, @PathVariable int startingAt) {
+		return quizService.getQuizStaticDetails(quizId, startingAt);
+
 	}
-	
-	
+
 	@PostMapping("/quizzes")
-	public UUID createQuiz(@RequestParam(name="genre") String genre,@RequestParam(name="mode_name") String mode,@RequestParam(name="noOfQuestions") int noOfQuestions,@RequestParam(name="SessionId") UUID SessionId) {
-		if(mode.equalsIgnoreCase("hard")) {
-			modeID=3;
+	public UUID createQuiz(@RequestParam(name = "genre") String genre, @RequestParam(name = "modeName") String mode,
+			@RequestParam(name = "noOfQuestions") int noOfQuestions, @RequestParam(name = "sessionId") UUID SessionId) {
+		if (mode.equalsIgnoreCase("hard")) {
+			modeID = 3;
+		} else if (mode.equalsIgnoreCase("medium")) {
+			modeID = 2;
+		} else if (mode.equalsIgnoreCase("easy")) {
+			modeID = 1;
 		}
-		else if(mode.equalsIgnoreCase("medium")){
-			modeID=2;
-		}
-		else if(mode.equalsIgnoreCase("easy")){
-			modeID=1;
-		}
-		
-		
-		return quizService.createQuiz( genre, modeID, noOfQuestions,SessionId);
-		
+
+		return quizService.createQuiz(genre, modeID, noOfQuestions, SessionId);
+
 	}
-	
-	/*@PutMapping("/quizzes")
-	public void createQuiz() {
-		 quizService.createQuiz();
-	}*/
-	
+
 }

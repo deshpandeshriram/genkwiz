@@ -8,28 +8,27 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="mcq_answer")
+@Table(name = "mcq_answer")
 public class MCQAnswer {
 
 	@Id
-	@Column(name="id")
+	@Column(name = "id")
 	private int id;
-	@Column(name="question_id",insertable=false,updatable=false)
+	@Column(name = "question_id", insertable = false, updatable = false)
 	private int questionId;
-	@Column(name="answer_number")
+	@Column(name = "answer_number")
 	private int answerNumber;
-	@Column(name="answer_value")
+	@Column(name = "answer_value")
 	private String answerValue;
-	@Column(name="is_correct_ans")
+	@Column(name = "is_correct_ans")
 	private int isCorrectAns;
-	
+
 	@ManyToOne
-    @JoinColumn(name="question_id", nullable=false)
+	@JoinColumn(name = "question_id", nullable = false)
 	private Question question;
-	
-	
+
 	public MCQAnswer() {
-		
+
 	}
 
 	public MCQAnswer(int id, int questionId, int answerNumber, String answerValue, int isCorrectAns) {
@@ -39,8 +38,7 @@ public class MCQAnswer {
 		this.answerNumber = answerNumber;
 		this.answerValue = answerValue;
 		this.isCorrectAns = isCorrectAns;
-		
-		
+
 	}
 
 	public int getId() {
@@ -82,6 +80,5 @@ public class MCQAnswer {
 	public void setIsCorrectAns(int isCorrectAns) {
 		this.isCorrectAns = isCorrectAns;
 	}
-	
-	
+
 }

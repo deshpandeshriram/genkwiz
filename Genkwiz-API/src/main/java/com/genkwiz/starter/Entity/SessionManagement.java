@@ -8,76 +8,64 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="session_management")
+@Table(name = "session_management")
 public class SessionManagement {
 
 	@Id
-    @Column(name="id")
+	@Column(name = "id")
 	private UUID sessionId;
-	
-    @Column(name="user_name")
-	private String username;
-	
-    
-    @Column(name="avatar_id")
-	private String avatarId;
-	
-    
-    @Column(name="quiz_id")
+
+	@Column(name = "user_name")
+	private String userName;
+
+	@Column(name = "avatar_name")
+	private String avatarName;
+
+	@Column(name = "quiz_id")
 	private UUID quizId;
 
-    public SessionManagement() {
-    	
-    }
-    
-    
-	public SessionManagement(UUID sessionId, String username, String avatarId, UUID quizId) {
-		super();
-		this.sessionId = sessionId;
-		this.username = username;
-		this.avatarId = avatarId;
-		this.quizId = quizId;
+	public SessionManagement() {
+
 	}
 
+	public SessionManagement(UUID sessionId, String userName, String avatarName, UUID quizId) {
+		super();
+		this.sessionId = sessionId;
+		this.userName = userName;
+		this.avatarName = avatarName;
+		this.quizId = quizId;
+	}
 
 	public UUID getSessionId() {
 		return sessionId;
 	}
 
-
 	public void setSessionId(UUID sessionId) {
 		this.sessionId = sessionId;
 	}
 
-
 	public String getUsername() {
-		return username;
+		return userName;
 	}
-
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 
-
-	public String getAvatarId() {
-		return avatarId;
+	public String getAvatarName() {
+		return avatarName;
 	}
 
-
-	public void setAvatarId(String avatarId) {
-		this.avatarId = avatarId;
+	public void setAvatarName(String avatarId) {
+		this.avatarName = avatarId;
 	}
-
 
 	public UUID getQuizId() {
 		return quizId;
 	}
 
-
 	public void setQuizId(UUID quizId) {
 		this.quizId = quizId;
 	}
-    
-    
+
 }

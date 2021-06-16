@@ -31,178 +31,128 @@ import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 
 @Entity
-@Table(name="quiz")
-/*@SecondaryTables({
-	@SecondaryTable(name="question_bank",pkJoinColumns=@PrimaryKeyJoinColumn(name="q_id")),
-	@SecondaryTable(name="que_hint",pkJoinColumns=@PrimaryKeyJoinColumn(name="q_id")),
-	@SecondaryTable(name="que_mode",pkJoinColumns=@PrimaryKeyJoinColumn(name="q_id")),
-	@SecondaryTable(name="multimedia",pkJoinColumns=@PrimaryKeyJoinColumn(name="q_id"))
-	
-})*/
+@Table(name = "quiz")
 @IdClass(QuizId.class)
-
-   
 public class Quiz {
-		
-		@Id
-		@Column(name="id")		
-		private UUID quizId;
-		
-		@Id
-		@Column(name="question_id")
-		private int qId;
-		
-		@Column(name="time_taken_by_user")
-		private Time userTime;
-		
-		@Column(name="hints_used")
-		private int numberofHints;
-		
-		@Column(name="score_per_question")
-		private int scorePerQuestion;
-		
 
-	    @Enumerated(EnumType.STRING)
-		@Column(name="current_status",columnDefinition = "status")
-	    
-		Status status;
-	
-	    @Column(name="serial_number")
-		private int serialNumber;
-		
-	    @Column(name="user_answer")
-		private String userAnswer;
-		
-	    @Column(name="is_correct")
-		private boolean isCorrect;
-		//@OneToOne(mappedBy="quiz")
-	   /* @OneToOne
-		private Question questions;*/
-		
-		public Quiz() {
-			
-		}
-		
-	
+	@Id
+	@Column(name = "id")
+	private UUID quizId;
 
-		public Quiz(UUID quizId, int qId, Time userTime, int numberofHints, int scorePerQuestion, Status status,
-				int serialNumber, String userAnswer, boolean isCorrect) {
-			super();
-			this.quizId = quizId;
-			this.qId = qId;
-			this.userTime = userTime;
-			this.numberofHints = numberofHints;
-			this.scorePerQuestion = scorePerQuestion;
-			this.status = status;
-			this.serialNumber = serialNumber;
-			this.userAnswer = userAnswer;
-			this.isCorrect = isCorrect;
-		}
+	@Id
+	@Column(name = "question_id")
+	private int questionId;
 
+	@Column(name = "time_taken_by_user")
+	private Time userTime;
 
+	@Column(name = "hints_used")
+	private int numberOfHints;
 
-		public UUID getQuizId() {
-			return quizId;
-		}
+	@Column(name = "score_per_question")
+	private int scorePerQuestion;
 
-		
-		public void  setQuizId(UUID quizId) {
-			this.quizId = quizId;
-		}
+	@Enumerated(EnumType.STRING)
+	@Column(name = "current_status", columnDefinition = "status")
+	Status status;
 
-		
-		public Time getUserTime() {
-			return userTime;
-		}
+	@Column(name = "serial_number")
+	private int serialNumber;
 
-		public void setUserTime(Time userTime) {
-			this.userTime = userTime;
-		}
+	@Column(name = "user_answer")
+	private String userAnswer;
 
-		public int getNumberofHints() {
-			return numberofHints;
-		}
+	@Column(name = "is_correct")
+	private boolean isCorrect;
 
-		public void setNumberofHints(int numberofHints) {
-			this.numberofHints = numberofHints;
-		}
+	public Quiz() {
 
-		public int getScorePerQuestion() {
-			return scorePerQuestion;
-		}
+	}
 
-		public void setScorePerQuestion(int scorePerQuestion) {
-			this.scorePerQuestion = scorePerQuestion;
-		}
+	public Quiz(UUID quizId, int questionId, Time userTime, int numberOfHints, int scorePerQuestion, Status status,
+			int serialNumber, String userAnswer, boolean isCorrect) {
+		super();
+		this.quizId = quizId;
+		this.questionId = questionId;
+		this.userTime = userTime;
+		this.numberOfHints = numberOfHints;
+		this.scorePerQuestion = scorePerQuestion;
+		this.status = status;
+		this.serialNumber = serialNumber;
+		this.userAnswer = userAnswer;
+		this.isCorrect = isCorrect;
+	}
 
-		
-	
+	public UUID getQuizId() {
+		return quizId;
+	}
 
-		public Status getStatus() {
-			return status;
-		}
+	public void setQuizId(UUID quizId) {
+		this.quizId = quizId;
+	}
 
-		public void setStatus(Status status) {
-			this.status = status;
-		}
+	public Time getUserTime() {
+		return userTime;
+	}
 
-/*		public Question getQuestions() {
-			return questions;
-		}
+	public void setUserTime(Time userTime) {
+		this.userTime = userTime;
+	}
 
-		public void setQuestions(Question questions) {
-			this.questions = questions;
-		}*/
+	public int getNumberofHints() {
+		return numberOfHints;
+	}
 
-		public int getqId() {
-			return qId;
-		}
+	public void setNumberofHints(int numberofHints) {
+		this.numberOfHints = numberofHints;
+	}
 
-		public void setqId(int qId) {
-			this.qId = qId;
-		}
-		
-		
-		
-		public int getSerialNumber() {
-			return serialNumber;
-		}
+	public int getScorePerQuestion() {
+		return scorePerQuestion;
+	}
 
+	public void setScorePerQuestion(int scorePerQuestion) {
+		this.scorePerQuestion = scorePerQuestion;
+	}
 
+	public Status getStatus() {
+		return status;
+	}
 
-		public void setSerialNumber(int serialNumber) {
-			this.serialNumber = serialNumber;
-		}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 
+	public int getQuestionId() {
+		return questionId;
+	}
 
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
 
-		public String getUserAnswer() {
-			return userAnswer;
-		}
+	public int getSerialNumber() {
+		return serialNumber;
+	}
 
+	public void setSerialNumber(int serialNumber) {
+		this.serialNumber = serialNumber;
+	}
 
+	public String getUserAnswer() {
+		return userAnswer;
+	}
 
-		public void setUserAnswer(String userAnswer) {
-			this.userAnswer = userAnswer;
-		}
+	public void setUserAnswer(String userAnswer) {
+		this.userAnswer = userAnswer;
+	}
 
+	public boolean isCorrect() {
+		return isCorrect;
+	}
 
+	public void setCorrect(boolean isCorrect) {
+		this.isCorrect = isCorrect;
+	}
 
-		public boolean isCorrect() {
-			return isCorrect;
-		}
-
-
-
-		public void setCorrect(boolean isCorrect) {
-			this.isCorrect = isCorrect;
-		}
-
-
-
-		@Override
-		  public String toString() {
-		      return "Quiz [Quiz Id=" + this.quizId + ", usertime=" + this.userTime + ", QuestionId=" + this.qId + ", Attempted or not=" +this.status + "]";
-		  }
-		
 }

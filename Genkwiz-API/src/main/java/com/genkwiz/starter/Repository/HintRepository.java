@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.genkwiz.starter.Entity.Hint;
 
-public interface HintRepository extends CrudRepository<Hint,Integer >  {
+public interface HintRepository extends CrudRepository<Hint, Integer> {
 
-	List<Hint> findByQId(Integer qId); 
+	List<Hint> findByQuestionId(Integer qId);
 
 }

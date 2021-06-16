@@ -13,10 +13,10 @@ public class HintService {
 
 	@Autowired
 	HintRepository hintRepository;
-	
+
 	public List<Hint> getHint(Integer qId) {
 
-		return hintRepository.findByQId(qId) ;
+		return hintRepository.findByQuestionId(qId);
 	}
 
 }
