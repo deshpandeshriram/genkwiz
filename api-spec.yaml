@@ -15,41 +15,19 @@ servers:
 tags:
   - name: quiz-controller
     description: Quiz Controller
+          
 paths:
-  /quizzes:
+  /login:
     post:
       tags:
-        - quiz-controller
-      description: >-
-        Creates the quiz with mode and genre opted by the user and returns the
-        Quiz Id.
-      operationId: createQuiz
-      parameters:
-        - name: genre
-          in: query
-          description: 'Genre of the quiz.(eg.Politics,Sports etc.)'
-          required: true
-          schema:
-            type: string
-        - name: mode
-          in: query
-          description: 'Mode of the questions in the quiz.(Eg.Easy,Medium,Hard)'
-          required: true
-          schema:
-            type: string
-            enum:
-              - Easy
-              - Medium
-              - Hard
-        - name: numberOfQuestions
-          in: query
-          description: Total number of questions in the quiz.
-          required: false
-          schema:
-            type: integer
-            minimum: 3
-            maximum: 10
-            default: 10
+        - login-controller
+      description: 'Register new user and returns the session Id.'
+      operationId: createSession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostLoginRequest'
       responses:
         '201':
           description: successful operation
@@ -58,10 +36,57 @@ paths:
               schema:
                 type: object
                 properties:
-                  quizId:
-                    description: Id of the quiz generated.
-                    type: string
-                    format: uuid
+                  data:
+                    type: object
+                    properties:
+                      sessionId:
+                        description: Id of the quiz generated.
+                        type: string
+                        format: uuid
+                        example: '88267634-d8fe-11eb-b8bc-0242ac130003'
+            
+        '400':
+          description: Bad Request
+        '404':
+          description: 'If provided avatar Id does not exist.'
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {}
+            
+​
+  /quizzes:
+    post:
+      tags:
+        - quiz-controller
+      description: >-
+        Creates the quiz with mode and genre opted by the user and returns the Quiz Id.
+      operationId: createQuiz
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostQuizRequest'
+              
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      quizId:
+                        description: Id of the quiz generated.
+                        type: string
+                        format: uuid
+                  
           links:
             GetQuizByQuizId:
               description: >-
@@ -70,8 +95,9 @@ paths:
               operationId: getQuiz
               parameters:
                 quizId: $response.body#/quizId
+            
         '400':
-          description: Bad Request
+          description: Bad Request 
         '401':
           description: Unauthorized
           content: {}
@@ -84,13 +110,16 @@ paths:
         '500':
           description: Internal Server Error
           content: {}
+          
   '/quizzes/{quizId}':
     get:
       tags:
         - quiz-controller
-      description: Fetch static details of the questions of the quiz generated.
-      operationId: getQuestion
+      description: >-
+        'Fetch static details of the questions of the quiz generated.  Questions, hints and other components of the questions, which are stored on server.'
+      operationId: getQuizQuestions
       parameters:
+        - $ref: '#/components/parameters/SessionId'
         - name: quizId
           in: path
           description: Id returned on quiz formation which is now used to fetch quiz.
@@ -103,7 +132,6 @@ paths:
           description: >-
             The serial number of the quiz's question of whose static information
             is to be fetched.
-          required: true
           schema:
             type: integer
       responses:
@@ -112,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'
+                $ref: '#/components/schemas/QuizStaticData'
         '401':
           description: Unauthorized
           content: {}
@@ -123,41 +151,7 @@ paths:
           description: Not Found
           content: {}
       deprecated: false
-  '/quizzes/{quizId}/status':
-    get:
-      tags:
-        - quiz-controller
-      description: >-
-        Fetch dynamic components of the quiz like status of the quiz,time,score
-        etc.
-      operationId: getQuiz
-      parameters:
-        - name: quizId
-          in: path
-          description: >-
-            Id returned on quiz formation which is now used to fetch quiz
-            details.
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Quiz'
-        '401':
-          description: Unauthorized
-          content: {}
-        '403':
-          description: Forbidden
-          content: {}
-        '404':
-          description: Not Found
-          content: {}
-      deprecated: false
+   
   '/quizzes/{quizId}/answers/{serialNumber}':
     post:
       tags:
@@ -165,6 +159,7 @@ paths:
       description: Submit the user's answer and display the correct answer.
       operationId: submitAnswer
       parameters:
+        - $ref: '#/components/parameters/SessionId'
         - name: quizId
           in: path
           description: Id of the quiz currently being played.
@@ -178,34 +173,54 @@ paths:
           required: true
           schema:
             type: integer
+        
       requestBody:
-        description: Details of attempted question
-        required: true
-        content:
-          application/json:
+          description: Details of attempted question 
+          required: true
+          content:
+           application/json:
             schema:
-              type: object
-              properties:
-                userTime:
-                  type: integer
-                  format: int32
-                hintsUsed:
-                  type: integer
-                isAttempted:
-                  type: boolean
-                userAnswer:
-                  type: string
-                typeOfQuestion:
-                  type: string
+             type: object
+             required:
+              - data
+             properties:
+              data:
+                type: object
+                required:
+                  - userTime
+                  - userAnswer
+                properties:
+                  userTime:
+                    type: integer
+                    format : int32
+                  hintsUsed:
+                    type: integer
+                  status:
+                    $ref: '#/components/schemas/QuestionState'
+                  userAnswer:
+                    type: string
+                  typeOfQuestion:
+                    type: string    
+               
       responses:
         '201':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Answer'
+                type: object
+                required:
+                  - id
+                  - data
+                properties:
+                  id:
+                    type: string
+                    description: Id of the Quiz
+                  data:
+                    $ref : '#/components/schemas/QuestionStatus'  
+         
         '400':
-          description: Bad Request
+          description: Bad Request 
         '401':
           description: Unauthorized
           content: {}
@@ -217,17 +232,22 @@ paths:
           content: {}
         '500':
           description: Internal Server Error
-          content: {}
-  '/quizzes/{quizId}/submit':
-    post:
+          content: {} 
+          
+  '/quizzes/{quizId}/status':
+    get:
       tags:
         - quiz-controller
-      description: Get performance of Entire Quiz.
-      operationId: SubmitFinalPerformance
+      description: >-
+        Fetch dynamic components of the quiz like status of the quiz,time,score
+        etc.
+      operationId: fetchQuizStatus
       parameters:
+        - $ref: '#/components/parameters/SessionId'
         - name: quizId
           in: path
-          description: Id of the quiz played.
+          description: >-
+            Id returned on quiz formation which is now used to fetch quiz details.
           required: true
           schema:
             type: string
@@ -238,9 +258,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Performance'
+                 $ref : '#/components/schemas/QuizStatus'  
         '400':
-          description: Bad Request
+          description: Bad Request on invalid quizId
         '401':
           description: Unauthorized
           content: {}
@@ -252,59 +272,109 @@ paths:
           content: {}
         '500':
           description: Internal Server Error
+          content: {} 
+          
+  '/quizzes/{quizId}/submit':
+    post:
+      tags:
+        - quiz-controller
+      description: Get performance of Entire Quiz.
+      operationId: SubmitFinalPerformance
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+        - name: quizId
+          in: path
+          description: Id of the quiz played.
+          required: true
+          schema:
+            type: string
+            format: uuid
+        
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/Performance'
+                    
+ 
+        '400':
+          description: Bad Request 
+        '401':
+          description: Unauthorized
           content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+        '500':
+          description: Internal Server Error
+          content: {} 
+  
 components:
   schemas:
-    Hint:
-      title: Hint
+    PostLoginRequest:
+      type: object
+      required:
+        - username
+      properties:
+        username:
+          type: string
+          description: 'Name of the user'
+          example: 'Krishna Bharat'
+        avatarId:
+          type: string
+          description:  'Id of the avatar selected by user.'
+          example: 'f615d834-d8fd-11eb-b8bc-0242ac130003'
+    
+    PostQuizRequest:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - genre
+            - mode
+          properties:
+            genre:
+              type: string
+              description: 'Genre of the quiz, Politics, Sports.'
+              example: Politics
+            mode:
+              type: string
+              description: 'Mode of the questions in the quiz.'
+              enum :
+                - Easy
+                - Medium
+                - Hard
+              example: Easy
+            numberOfQuestion:
+              type: integer
+              description: 'Total number of questions in the quiz.'
+              minimum: 3
+              maximum: 10
+              default: 10
+              
+    QuizStaticData:
+      title: Quiz
       type: object
       properties:
-        id:
-          type: integer
-          format: int32
-        number:
-          type: integer
-          format: int32
-        text:
-          type: string
-        marksDeduction:
-          type: integer
-          format: int32
-        multimedia:
+       quizId:
+         type: string
+         format: uuid
+       data:
+        type: object
+        properties:
+         questions:
           type: array
           items:
-            $ref: '#/components/schemas/Multimedia'
-    Mode:
-      title: Mode
-      type: object
-      properties:
-        maxSore:
-          type: integer
-          format: int32
-        maxTime:
-          $ref: '#/components/schemas/Time'
-        id:
-          type: integer
-          format: int32
-        name:
-          type: string
-    Multimedia:
-      title: Multimedia
-      type: object
-      properties:
-        multiName:
-          type: string
-        multiType:
-          type: string
-        numberOfMultimedia:
-          type: integer
-          format: int32
-        multiId:
-          type: integer
-          format: int32
-        multicontent:
-          type: string
-          format: byte
+           $ref: '#/components/schemas/Question'
+​
     Question:
       title: Question
       type: object
@@ -325,57 +395,126 @@ components:
         type:
           type: string
         hints:
-          type: array
-          items:
-            $ref: '#/components/schemas/Hint'
-        multimedia:
-          type: array
-          items:
-            $ref: '#/components/schemas/Multimedia'
-    Answer:
-      title: Answer
+         type: array
+         items:
+           $ref: '#/components/schemas/Hint'
+​
+    Hint:
+      title: Hint
       type: object
       properties:
-        questionId:
+        id:
+          type: integer
+          format: int32
+        number:
           type: integer
           format: int32
         text:
           type: string
-    Quiz:
-      title: Quiz
+        marksDeduction:
+          type: integer
+          format: int32
+          
+    QuizStatus:
       type: object
+      required:
+        - id
       properties:
-        quizId:
+        id:
           type: string
-          format: uuid
-        questions:
+          description: Id of the Quiz
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/Question'
+            $ref: '#/components/schemas/QuestionStatus'
+          
+    QuestionStatus:
+      type: object
+      properties:
+        userAnswer:
+          type: string
+          description: User's question response.
+        userTime:
+          type: integer
+          description: 'Time taken by the user to answer the question.'
+        hintsUsed:
+          type: integer
+          description: 'Number of hints used by user.'
+        score:
+          type: integer
+          description: 'Obtained score by the user. It depnds on questions actual score and hints used.'
+        status:
+          $ref: '#/components/schemas/QuestionState'
+        correct:
+          type: boolean
+          description: 'true if user provided answer is correct.'
+        serialNumber:
+          type: integer
+          description: 'Serial number of the question in the Quiz.'
+          
+    Mode:
+      title: Mode
+      type: object
+      properties:
+        maxSore:
+          type: integer
+          format: int32
+        maxTime:
+          $ref: '#/components/schemas/Time'
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+              
+      
     Time:
       title: Time
       description: Creation date and time
       type: object
       properties:
-        time:
-          type: string
-          format: date-time
+        time: 
+         type: string
+         format: date-time
+        
     Performance:
       title: Performance
       type: object
       properties:
-        numberOfCorrect:
-          type: integer
-          format: int32
-        quizId:
-          type: integer
-          format: int32
-        numberOfAttempted:
-          type: integer
-          format: int32
-        totalTime:
-          type: integer
-          format: int32
-        finalScore:
-          type: integer
-          format: int32
+        data:
+          type: object
+          properties:
+            numberOfCorrect:
+              type: integer
+              format: int32 
+            quizId:
+              type: integer
+              format: int32  
+            numberOfAttempted:
+              type: integer
+              format: int32
+            totalTime:
+              type: integer
+              format: int32
+            finalScore:
+              type: integer
+              format: int32
+              
+    
+    QuestionState:
+      title: Question status
+      type: string
+      description: State of the question in the quiz.
+      enum:
+        - NOT_ATTEMPTED
+        - ATTEMPTED
+        - SKIPPED
+        
+  parameters:
+    SessionId:
+      in: header
+      name: sessionId
+      schema:
+        type: string
+      required: true
+      example: '9e409206-d8f9-11eb-b8bc-0242ac130003'
