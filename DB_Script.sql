@@ -31,8 +31,6 @@ question_id int not null,
 hint_number int not null,
 value text not null,
 marks_deduction int,
-multimedia_content varchar,
-multimedia_type varchar,
 primary key (id),
 foreign key (question_id) references question_Bank(id)
 );
@@ -41,11 +39,9 @@ create index index_question_hint on question_hint (question_id , hint_number);
 
 -- Purpose:Consists of all information about the multimedia available for individual questions.
 create table multimedia(
-id serial not null,
+id uuid not null,
 question_id int not null,
-multimedia_number int not null,
-multimedia_type varchar not null,
-multimedia_content varchar not null,
+link text not null,
 primary key (id),
 foreign key (question_id) references question_bank(id)
 );
@@ -57,7 +53,6 @@ create table subjective_answer(
 id bigserial not null,
 question_id int not null,
 answer_value text not null,
-answer_multimedia varchar,
 primary key (id),
 foreign key (question_id) references question_bank(id)
 );
@@ -84,19 +79,19 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 create type status as enum('ATTEMPTED', 'NOT_ATTEMPTED', 'SKIPPED');
 
 -- Purpose: Consists information about quizzes to be generated.
-create table quiz(
-id uuid not null,
-question_id int not null,
+create table quiz_question_state(
+quiz_id uuid not null,
+id int not null,
 time_taken_by_user int default 0,
 hints_used int default 0,
-score_per_question int default 0,
-current_status status default 'NOT_ATTEMPTED',
+score int default 0,
+status status default 'NOT_ATTEMPTED',
 is_correct boolean,
 user_answer varchar,
 serial_number integer  
 );
 
-create index index_quiz on quiz (question_id , score_per_question);
+create index index_quiz on quiz (id , score);
 
 -- Purpose: Consists information about performance parameters to evaluate users.
 create table performance(
@@ -107,12 +102,12 @@ no_of_correct_ans int default 0,
 final_score int default 0,
 start_time timestamp not null,
 end_time timestamp not null,
+quiz_status varchar, 
 total_time_taken int not null
-
 );
 
 
--- Purpose: Consists information about available avatars for user.No longer needed for version 1
+-- Purpose: Consists information about available avatars for user. No longer needed for version 1
 create table avatar(
 id serial not null,
 avatar_name varchar not null,
@@ -121,10 +116,16 @@ avatar_type varchar not null,
 primary key(id)
 );
 
--- Purpose: Consists information about user's quiz history on genkwiz.com
-create table session_management(
+-- Purpose: Consists information about user's profile on genkwiz.com
+create table user(
 id uuid not null,
 user_name varchar not null,
 avatar_id varchar not null,
-quiz_id uuid
+);
+
+
+-- Purpose: Consists information about user's quiz history on genkwiz.com
+create table user_session(
+user_id uuid not null,
+quiz_id uuid not null
 );

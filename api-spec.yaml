@@ -40,7 +40,8 @@ paths:
                     type: object
                     properties:
                       sessionId:
-                        description: Id of the quiz generated.
+                        description: >-
+                          Session Id created for user.
                         type: string
                         format: uuid
                         example: '88267634-d8fe-11eb-b8bc-0242ac130003'
@@ -54,7 +55,7 @@ paths:
           description: Internal Server Error
           content: {}
             
-​
+
   /quizzes:
     post:
       tags:
@@ -180,27 +181,7 @@ paths:
           content:
            application/json:
             schema:
-             type: object
-             required:
-              - data
-             properties:
-              data:
-                type: object
-                required:
-                  - userTime
-                  - userAnswer
-                properties:
-                  userTime:
-                    type: integer
-                    format : int32
-                  hintsUsed:
-                    type: integer
-                  status:
-                    $ref: '#/components/schemas/QuestionState'
-                  userAnswer:
-                    type: string
-                  typeOfQuestion:
-                    type: string    
+              $ref: '#/components/schemas/PostAnswer'
                
       responses:
         '201':
@@ -328,7 +309,7 @@ components:
         avatarId:
           type: string
           description:  'Id of the avatar selected by user.'
-          example: 'f615d834-d8fd-11eb-b8bc-0242ac130003'
+          example: 10
     
     PostQuizRequest:
       type: object
@@ -374,7 +355,7 @@ components:
           type: array
           items:
            $ref: '#/components/schemas/Question'
-​
+
     Question:
       title: Question
       type: object
@@ -398,17 +379,19 @@ components:
          type: array
          items:
            $ref: '#/components/schemas/Hint'
-​
+
     Hint:
       title: Hint
       type: object
       properties:
-        id:
+        questionId:
           type: integer
           format: int32
-        number:
+          description: 'Question Id'
+        hintNumber:
           type: integer
           format: int32
+          description: 'Hint number'
         text:
           type: string
         marksDeduction:
@@ -427,8 +410,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/QuestionStatus'
+            
+    PostAnswer:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          type: object
+          required:
+            - userTime
+            - userAnswer
+          properties:
+            userTime:
+              type: integer
+              description: 'Time take by the user to answer this question in seconds'
+            hintsUsed:
+              type: integer
+            status:
+              $ref: '#/components/schemas/QuestionState'
+            userAnswer:
+              type: string
+            typeOfQuestion:
+              type: string 
           
     QuestionStatus:
+      title: Question Status
       type: object
       properties:
         userAnswer:
@@ -436,7 +443,8 @@ components:
           description: User's question response.
         userTime:
           type: integer
-          description: 'Time taken by the user to answer the question.'
+          description: 'Time take by the user to answer this question in seconds.'
+          example: 45
         hintsUsed:
           type: integer
           description: 'Number of hints used by user.'
@@ -455,27 +463,20 @@ components:
     Mode:
       title: Mode
       type: object
+      description: 'Quiz mode seleted by the user'
       properties:
-        maxSore:
-          type: integer
-          format: int32
-        maxTime:
-          $ref: '#/components/schemas/Time'
-        id:
-          type: integer
-          format: int32
         name:
           type: string
+          description: 'Name of the mode.'
+        maxScore:
+          type: integer
+          format: int32
+          description: 'Maximum score of the mode.'
+        maxTime:
+          type: integer
+          description: 'Max time to solve any question in this mode in seconds.'
+          example: 120
               
-      
-    Time:
-      title: Time
-      description: Creation date and time
-      type: object
-      properties:
-        time: 
-         type: string
-         format: date-time
         
     Performance:
       title: Performance
@@ -502,18 +503,18 @@ components:
               
     
     QuestionState:
-      title: Question status
+      title: Question State
       type: string
       description: State of the question in the quiz.
       enum:
-        - NOT_ATTEMPTED
-        - ATTEMPTED
-        - SKIPPED
+        - not_attempted
+        - attempted
+        - skipped
         
   parameters:
     SessionId:
       in: header
-      name: sessionId
+      name: 'x-genkwiz-session-id'
       schema:
         type: string
       required: true
