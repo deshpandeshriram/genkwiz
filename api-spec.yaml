@@ -424,7 +424,7 @@ components:
           properties:
             userTime:
               type: integer
-              description: 'Time take by the user to answer this question in seconds'
+              description: 'Time taken by the user to answer this question in seconds'
             hintsUsed:
               type: integer
             status:
@@ -443,7 +443,7 @@ components:
           description: User's question response.
         userTime:
           type: integer
-          description: 'Time take by the user to answer this question in seconds.'
+          description: 'Time taken by the user to answer this question in seconds.'
           example: 45
         hintsUsed:
           type: integer
