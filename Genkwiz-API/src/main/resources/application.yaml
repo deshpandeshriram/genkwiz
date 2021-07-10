@@ -1,0 +1,41 @@
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: metrics
+  health:
+    db:
+      enabled: true
+    defaults:
+      enabled: true
+  security:
+    enabled: false
+server:
+  context-path: /genkwiz/v1
+  port: 8081
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/genkwiz
+    username: postgres
+    password: genkwiz
+  http:
+    multipart:
+      enabled: true
+  jpa:
+    database: POSTGRESQL
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
