@@ -384,10 +384,6 @@ components:
       title: Hint
       type: object
       properties:
-        questionId:
-          type: integer
-          format: int32
-          description: 'Question Id'
         hintNumber:
           type: integer
           format: int32

@@ -40,7 +40,6 @@ create index index_question_hint on question_hint (question_id , hint_number);
 -- Purpose:Consists of all information about the multimedia available for individual questions.
 create table multimedia(
 id uuid not null,
-question_id int not null,
 link text not null,
 primary key (id),
 foreign key (question_id) references question_bank(id)
